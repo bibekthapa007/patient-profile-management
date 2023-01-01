@@ -17,13 +17,20 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "migrate": "yarn knex migrate:latest --knexfile knexfile.ts",
+    "make:migration": "yarn knex migrate:make --knexfile knexfile.ts",
+    "rollback": "yarn knex migrate:rollback --knexfile knexfile.js"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
+    "class-validator": "^0.14.0",
+    "knex": "^2.3.0",
+    "mysql": "^2.18.1",
+    "nest-knexjs": "^0.0.12",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0"
   },
