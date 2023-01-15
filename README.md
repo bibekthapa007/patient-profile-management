@@ -1,7 +1,7 @@
 # Patient profile management
 
 ## Overview
-Patient Profile ma
+Patient Profile management.
 
 Project Detail
 - [Server](/server)
