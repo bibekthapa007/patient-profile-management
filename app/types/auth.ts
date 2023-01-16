@@ -2,14 +2,12 @@ export interface User {
   _id: string;
   name: string;
   email: string;
-  gender?: string ;
+  gender?: string;
   occupation?: string;
   imageLink: string;
   verified: boolean;
   password: string;
   role: string;
-  viewSensitive: boolean;
-  viewPolitical: boolean;
   releventCategories: string[];
   createdAt?: string;
   updatedAt?: string;
@@ -31,14 +29,16 @@ export interface SigninFrom {
 
 export interface SigninResponse {
   user: User;
-  token: string;
+  accessToken: string;
+  refreshToken: string;
   message: string;
   error?: string | null;
 }
 
 export interface SignupResponse {
   user: User;
-  token: string;
+  accessToken: string;
+  refreshToken: string;
   message: string;
   error?: string | null;
 }
