@@ -26,7 +26,7 @@ const paths = {
   adminCategory: "/admin/category",
   adminCreateCategory: "/admin/category/create",
 
-  editPatient(patientId: string) {
+  editPatient(patientId: number) {
     return `/patient/${patientId}/edit`;
   },
   singlePost(slug: string | null) {
@@ -34,6 +34,13 @@ const paths = {
       return `/post/${slug}`;
     }
     return "/post";
+  },
+  singlePatient(patientId: number) {
+    if (patientId) {
+      return `/patient/${patientId}`;
+    } else {
+      return "/patient";
+    }
   },
   singleCategory(categoryId: string | null) {
     if (categoryId) {
