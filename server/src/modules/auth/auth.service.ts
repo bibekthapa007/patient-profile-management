@@ -5,6 +5,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  Logger,
 } from '@nestjs/common';
 
 import { UserData } from '@/common/interface/user';
@@ -14,10 +15,13 @@ import { CreateUserDTO } from '@/modules/users/dto/create-user.dto';
 
 @Injectable()
 export class AuthService {
+  private logger: Logger;
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
-  ) {}
+  ) {
+    this.logger = new Logger('AuthService');
+  }
 
   async getTokens(userId: number, email: string) {
     const [accessToken, refreshToken] = await Promise.all([
@@ -29,7 +33,7 @@ export class AuthService {
         },
         {
           secret: process.env.JWT_ACCESS_SECRET,
-          expiresIn: '15m',
+          expiresIn: '100m',
         },
       ),
       this.jwtService.signAsync(
@@ -77,7 +81,7 @@ export class AuthService {
 
     await this.updateRefreshToken(newUser.id, tokens.refreshToken);
 
-    return tokens;
+    return { ...tokens, user: userExists };
   }
 
   async localSignIn(userBody: UserLoginDTO) {
@@ -100,7 +104,9 @@ export class AuthService {
 
     await this.updateRefreshToken(user.id, tokens.refreshToken);
 
-    return tokens;
+    this.logger.log(`User id ${user.id} login sucessfully.`);
+
+    return { ...tokens, user };
   }
 
   async refreshTokens(user: UserData) {

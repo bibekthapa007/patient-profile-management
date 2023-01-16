@@ -9,7 +9,7 @@ import { User } from '../users/model/users.model';
 import { UserData } from '@/common/interface/user';
 import { RefreshTokenGuard } from '@/common/guards/RefreshTokenGuard';
 
-@Controller('auth')
+@Controller('api/auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
@@ -23,11 +23,17 @@ export class AuthController {
     return this.authService.localSignIn(body);
   }
 
+  @UseGuards(AccessTokenGuard)
+  @Get('/check')
+  check(@Req() req: Request) {
+    const user = req.user as UserData;
+    return { user };
+  }
+
   @UseGuards(RefreshTokenGuard)
   @Post('/refresh')
   refreshToken(@Req() req: Request) {
     const user = req.user as UserData;
-    console.log(user);
     return this.authService.refreshTokens(user);
   }
 
