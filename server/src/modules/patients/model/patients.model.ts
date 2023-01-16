@@ -3,32 +3,43 @@ import { PATIENTS } from '@/common/dbTables';
 
 import { CreatePatientDTO } from '../dto/create-patient.dto';
 import { UpdatePatientDTO } from '../dto/update-patient.dto';
-import { NotFoundException } from '@nestjs/common';
 
 export class Patient extends BaseModel {
-    private readonly TABLENAME = PATIENTS
+  private readonly TABLENAME = PATIENTS;
 
-    table(){
-        return this.query.table(this.TABLENAME);
-    }
+  table() {
+    return this.query.table(this.TABLENAME);
+  }
 
-    create(patientBody: CreatePatientDTO){
-       return this.table().insert(patientBody);
-    }
+  create(patientBody: CreatePatientDTO) {
+    return this.table().insert(patientBody);
+  }
 
-    getList(){
-        return this.table().select("*");
-    }
+  getList() {
+    return this.table().select('*');
+  }
 
-    async getById(id: Number){
-       return this.table().where({"id": id});
-    }
+  getCount() {
+    return this.table().count('* as total');
+  }
 
-    updateById(id: Number, patientBody: UpdatePatientDTO ){
-        return this.table().update(patientBody).where({"id": id});
-    }
+  getById(id: Number) {
+    return this.table().where({ id: id });
+  }
 
-    deleteById(id: Number){
-        return this.table().delete().where({"id": id});
-    }
+  getByEmail(email: string) {
+    return this.table().where({ email });
+  }
+
+  updateById(id: Number, patientBody: UpdatePatientDTO) {
+    console.log(patientBody, 'patientBody');
+    const query = this.table().update(patientBody).where({ id });
+
+    console.log(query.toQuery());
+    return query;
+  }
+
+  deleteById(id: Number) {
+    return this.table().delete().where({ id: id });
+  }
 }

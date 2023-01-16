@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 
 import { Patient } from './model/patients.model';
 
@@ -10,22 +14,38 @@ export class PatientsService {
   constructor(private patients: Patient) {}
 
   public async getPatients() {
-    return await this.patients.getList();
+    const patients = await this.patients.getList();
+    const [data] = await this.patients.getCount();
+    const { total } = data;
+
+    return { patients, total };
   }
 
   public async getPatientById(id: Number) {
-    return await this.patients.getById(id);
+    const [patient] = await this.patients.getById(id);
+
+    return { patient };
   }
 
   public async createPatient(patientBody: CreatePatientDTO) {
+    let [oldpatient] = await this.patients.getByEmail(patientBody.email);
+
+    if (oldpatient) {
+      throw new BadRequestException(
+        `Patient with email ${oldpatient.email} already exists.`,
+      );
+    }
+
     let [patientId] = await this.patients.create(patientBody);
 
     let [createdPatient] = await this.patients.getById(patientId);
 
-    return createdPatient;
+    return { patient: createdPatient };
   }
 
   public async updatePatient(patientId: Number, patientBody: UpdatePatientDTO) {
+    delete patientBody.file;
+
     let updatedPatientId = await this.patients.updateById(
       patientId,
       patientBody,
@@ -33,7 +53,7 @@ export class PatientsService {
 
     let [updatedPatient] = await this.patients.getById(updatedPatientId);
 
-    return updatedPatient;
+    return { patient: updatedPatient };
   }
 
   public async deletePatient(patientId: Number) {

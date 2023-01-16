@@ -1,6 +1,9 @@
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class UpdatePatientDTO {
+  @IsNumber()
+  id: number;
+
   @IsString()
   @IsOptional()
   name: string;
@@ -20,4 +23,8 @@ export class UpdatePatientDTO {
   @IsString()
   @IsOptional()
   contact: string;
+
+  @IsString()
+  @IsOptional()
+  file: string | undefined;
 }

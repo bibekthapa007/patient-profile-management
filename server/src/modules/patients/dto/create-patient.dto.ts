@@ -1,9 +1,6 @@
 import { IsNumber, IsString } from 'class-validator';
 
 export class CreatePatientDTO {
-  @IsNumber()
-  id: number;
-
   @IsString()
   name: string;
 
@@ -21,4 +18,7 @@ export class CreatePatientDTO {
 
   @IsString()
   contact: string;
+
+  @IsString()
+  file!: string;
 }

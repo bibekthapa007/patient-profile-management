@@ -7,7 +7,9 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 
 import { AccessTokenGuard } from '@/common/guards/AccessTokenGuard';
@@ -16,9 +18,10 @@ import { PatientsService } from './patients.service';
 
 import { CreatePatientDTO } from './dto/create-patient.dto';
 import { UpdatePatientDTO } from './dto/update-patient.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @UseGuards(AccessTokenGuard)
-@Controller('patients')
+@Controller('api/patients')
 export class PatientsController {
   constructor(private patientsService: PatientsService) {}
 
@@ -32,11 +35,13 @@ export class PatientsController {
     return await this.patientsService.getPatientById(id);
   }
 
+  @UseInterceptors(FileInterceptor('file'))
   @Post()
-  async createPatient(@Body() body: CreatePatientDTO) {
+  async createPatient(@UploadedFile() file, @Body() body: CreatePatientDTO) {
     return await this.patientsService.createPatient(body);
   }
 
+  @UseInterceptors(FileInterceptor('file'))
   @Put('/:id')
   async updatePatient(
     @Param('id', ParseIntPipe) id: number,
