@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { KnexModule } from 'nest-knexjs';
 import { ConfigModule } from '@nestjs/config';
 
@@ -10,6 +10,7 @@ import { AppController } from './app.controller';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { PatientsModule } from './modules/patients/patients.module';
+import { LoggerMiddleware } from './middlewares/logger/logger.middleware';
 
 @Module({
   imports: [
@@ -69,4 +70,8 @@ import { PatientsModule } from './modules/patients/patients.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  public configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}
