@@ -4,16 +4,16 @@ import {
   theme,
   CSSReset,
 } from "@chakra-ui/react";
-import { useEffect } from "react";
 import Head from "next/head";
-import { Provider, useDispatch } from "react-redux";
+import { useEffect } from "react";
 import type { AppProps } from "next/app";
+import { Provider, useDispatch } from "react-redux";
+import { createStandaloneToast } from "@chakra-ui/toast";
 
 import { wrapper } from "../store/store";
-import { createStandaloneToast } from "@chakra-ui/toast";
-import { fetchUserData } from "features/auth/AuthSlice";
-import { fetchCategories } from "features/category/CategorySlice";
 import { useAppDispatch } from "store/hook";
+
+import { fetchUserData } from "features/auth/AuthSlice";
 
 const { ToastContainer } = createStandaloneToast();
 
@@ -58,7 +58,6 @@ function FetchAppData({ children }: MyProps) {
 
   useEffect(() => {
     dispatch(fetchUserData());
-    dispatch(fetchCategories());
   }, [dispatch]);
 
   return <div>{children}</div>;
