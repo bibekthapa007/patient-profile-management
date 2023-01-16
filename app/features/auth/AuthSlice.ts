@@ -1,6 +1,8 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+
 import { IAuthState, SigninResponse } from "types/auth";
+import { createBrearerAccessToken } from "utils/token";
 
 export const signin = createAsyncThunk(
   "auth/signin",
@@ -16,8 +18,9 @@ export const signin = createAsyncThunk(
           withCredentials: true,
         }
       );
-      const { token } = response.data;
-      localStorage.setItem("token", token);
+      const { accessToken, refreshToken } = response.data;
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
 
       return response.data;
     } catch (error: any) {
@@ -37,11 +40,11 @@ export const googleLogin = createAsyncThunk(
           headers: {
             "Content-Type": "application/json",
           },
-          withCredentials: true,
         }
       );
-      const { token } = response.data;
-      localStorage.setItem("token", token);
+      const { accessToken, refreshToken } = response.data;
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
 
       return response.data;
     } catch (error: any) {
@@ -79,8 +82,8 @@ export const fetchUserData = createAsyncThunk(
         {
           headers: {
             "Content-Type": "application/json",
+            Authorization: createBrearerAccessToken(),
           },
-          withCredentials: true,
         }
       );
       return response.data;
@@ -100,8 +103,8 @@ export const updateUser = createAsyncThunk(
         {
           headers: {
             "Content-Type": "application/json",
+            Authorization: createBrearerAccessToken(),
           },
-          withCredentials: true,
         }
       );
       return response.data;
@@ -120,8 +123,8 @@ export const logout = createAsyncThunk(
         {
           headers: {
             "Content-Type": "application/json",
+            Authorization: createBrearerAccessToken(),
           },
-          withCredentials: true,
         }
       );
       return response.data;

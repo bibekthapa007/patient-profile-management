@@ -1,6 +1,6 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { createStandaloneToast } from "@chakra-ui/toast";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
 import {
   IPatientState,
@@ -8,6 +8,7 @@ import {
   PatientResponse,
   PatientsResponse,
 } from "types/patient";
+import { createBrearerAccessToken } from "utils/token";
 
 const toast = createStandaloneToast();
 
@@ -19,7 +20,7 @@ export const fetchPatients = createAsyncThunk(
   ) => {
     try {
       const response = await axios.get<PatientsResponse>(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/patient`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/patients`,
         {
           params: {
             perPage: data.perPage,
@@ -28,11 +29,12 @@ export const fetchPatients = createAsyncThunk(
           },
           headers: {
             "Content-Type": "application/json",
+            Authorization: createBrearerAccessToken(),
           },
-          withCredentials: true,
         }
       );
       let nomore = response.data.patients.length < data.perPage;
+
       return { page: data.page, nomore, ...response.data };
     } catch (error: any) {
       return thunkApi.rejectWithValue(
@@ -47,12 +49,12 @@ export const fetchPatient = createAsyncThunk(
   async (patientId: string, thunkApi) => {
     try {
       const response = await axios.get<PatientResponse>(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/patient/${patientId}`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/patients/${patientId}`,
         {
           headers: {
             "Content-Type": "application/json",
+            Authorization: createBrearerAccessToken(),
           },
-          withCredentials: true,
         }
       );
       return response.data;
@@ -68,21 +70,22 @@ export const createPatient = createAsyncThunk(
   "patient/create",
   async (patient: PatientForm, thunkApi) => {
     try {
-      console.log(patient, patient.userFiles[0], "Form create Patient");
       const data = new FormData();
       data.append("file", patient.userFiles[0]);
       data.append("name", patient.name);
       data.append("email", patient.email);
-      data.append("phone", patient.phone);
+      data.append("contact", patient.contact);
       data.append("address", patient.address);
+      data.append("gender", patient.gender);
       data.append("dob", patient.dob);
 
       const response = await axios.post<PatientResponse>(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/patient`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/patients`,
         data,
         {
-          headers: {},
-          withCredentials: true,
+          headers: {
+            Authorization: createBrearerAccessToken(),
+          },
         }
       );
       return response.data;
@@ -103,16 +106,19 @@ export const updatePatient = createAsyncThunk(
       data.append("file", patient.userFiles[0]);
       data.append("name", patient.name);
       data.append("email", patient.email);
-      data.append("phone", patient.phone);
+      data.append("contact", patient.contact);
       data.append("address", patient.address);
+      data.append("gender", patient.gender);
       data.append("dob", patient.dob);
+      data.append("notes", patient.notes);
 
       const response = await axios.put<PatientResponse>(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/patient/${patient._id}`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/patients/${patient.id}`,
         data,
         {
-          headers: {},
-          withCredentials: true,
+          headers: {
+            Authorization: createBrearerAccessToken(),
+          },
         }
       );
       return response.data;
@@ -126,10 +132,10 @@ export const updatePatient = createAsyncThunk(
 
 export const deletePatient = createAsyncThunk(
   "patient/delete",
-  async (patientId: string, thunkApi) => {
+  async (patientId: number, thunkApi) => {
     try {
       const response = await axios.delete<PatientResponse>(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/patient/${patientId}`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/patients/${patientId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -155,7 +161,7 @@ export const initfetchPatients = (params: any) => async (dispatch: any) => {
 export const fetchMorePatients =
   (params: any) => async (dispatch: any, getState: any) => {
     await dispatch(incrementPage());
-    // return await dispatch(fetchPosts({ page: getState().post.page }));
+    // return await dispatch(fetchPatients({ page: getState().post.page  }));
   };
 
 const initialState: IPatientState = {
@@ -243,6 +249,7 @@ export const AdminPostSlice = createSlice({
         state.patientsLoading = false;
         state.nomore = action.payload.nomore;
         state.patients = action.payload.patients;
+        state.total = action.payload.total;
       })
       .addCase(fetchPatients.rejected, (state, action: PayloadAction<any>) => {
         state.patientsLoading = false;
@@ -320,7 +327,7 @@ export const AdminPostSlice = createSlice({
         (state, action: PayloadAction<PatientResponse>) => {
           state.deleting = false;
           state.patients = state.patients.filter((v) => {
-            return !(v._id === action.payload.patientId);
+            return !(v.id === action.payload.patientId);
           });
 
           toast.toast({
