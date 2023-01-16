@@ -13,10 +13,12 @@ import {
   DrawerContent,
   DrawerOverlay,
 } from "@chakra-ui/modal";
+import { useEffect } from "react";
+import Router, { useRouter } from "next/router";
 import { useDisclosure } from "@chakra-ui/hooks";
-import { CgMenuGridO } from "react-icons/cg";
+import { IconButton, Spinner } from "@chakra-ui/react";
+
 import {
-  AiOutlineHome,
   AiOutlineMenu,
   AiOutlineMessage,
   AiOutlineSetting,
@@ -24,16 +26,12 @@ import {
 import { BsPerson, BsQuestionCircle } from "react-icons/bs";
 import { BiLogOut } from "react-icons/bi";
 import { MdPayment } from "react-icons/md";
+import { HiOutlineCalendar } from "react-icons/hi";
 
-import Navbar from "./Navbar";
 import NavItem from "./NavItem";
 import paths from "utils/paths";
 import { useAppDispatch, useAppSelector } from "store/hook";
-import Router, { useRouter } from "next/router";
 import { logout } from "features/auth/AuthSlice";
-import { IconButton, Spinner } from "@chakra-ui/react";
-import { useEffect } from "react";
-import { HiOutlineAdjustments, HiOutlineCalendar } from "react-icons/hi";
 
 interface DashboardProps {
   children: React.ReactNode | React.ReactNode[];
@@ -134,8 +132,13 @@ function DashboardLayout({ children, bgColor }: DashboardLayoutProps) {
       <Box>
         <Box bg={bgColor || "gray.100"} minHeight="calc(100vh - 64px)">
           <Grid
-            templateColumns={["auto", "auto", "1fr 2fr", "1fr 3fr", "1fr 4fr"]}
-            gap={[2, 2, 4]}
+            templateColumns={[
+              "minmax(0px, auto)",
+              "minmax(0px, auto)",
+              "300px minmax(0px, 2fr)",
+              "300px minmax(0px, 3fr)",
+              "300px minmax(0px, 4fr)",
+            ]}
             autoRows={`minmax(min-content, max-content)`}
             position="relative"
             overflow="hidden"
@@ -143,14 +146,15 @@ function DashboardLayout({ children, bgColor }: DashboardLayoutProps) {
             <Box
               display={["none", "none", "flex"]}
               bg="white"
-              minHeight="calc(100vh - 64px)"
+              // minHeight="calc(100vh - 64px)"
+              minHeight={"100vh"}
               maxHeight="100vh"
               position="sticky"
               top={0}
             >
               <DashboardDrawerItems onOpen={onOpen} />
             </Box>
-            <Box p={2}>{children}</Box>
+            <Box>{children}</Box>
           </Grid>
         </Box>
         <Drawer isOpen={isOpen} placement="left" onClose={onClose}>

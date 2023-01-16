@@ -13,13 +13,17 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightElement,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Portal,
   Select,
   Text,
-  Tooltip,
 } from "@chakra-ui/react";
 
 import DataTable, { TableColumn } from "react-data-table-component";
-import { FiEdit } from "react-icons/fi";
+import { FiEdit, FiMoreHorizontal, FiMoreVertical } from "react-icons/fi";
 import { AiOutlineDelete } from "react-icons/ai";
 import { HiOutlineX, HiSearch, HiPlus } from "react-icons/hi";
 
@@ -30,11 +34,23 @@ import {
   handlePageChange,
 } from "features/adminPost/AdminPostSlice";
 import { fetchPatients, initPatients } from "features/patient/PatientSlice";
-import DashboardLayout from "components/DashboardLayout";
-import paths from "utils/paths";
-import { Post } from "types/post";
 
-export default function AdminPost() {
+import DashboardLayout from "components/DashboardLayout";
+
+import paths from "utils/paths";
+
+import { Patient } from "types/patient";
+
+const customStyles = {
+  table: {
+    style: {
+      minHeight: "500px",
+      background: "white",
+    },
+  },
+};
+
+export default function PatientList() {
   let dispatch = useAppDispatch();
   let router = useRouter();
   const {
@@ -63,23 +79,25 @@ export default function AdminPost() {
         name: "Basic Info",
         grow: 3,
         selector: (row) => (
-          <Flex py={4}>
-            <Image
-              src={row.imageLink ? row.imageLink : ""}
-              alt={row.title}
-              height="70"
-              width="70"
-            />
-            <Flex flexDir={"column"} ml={2}>
-              <Heading size={"sm"}>{row.name}</Heading>
-              <Text fontSize={"sm"}>{row.email}</Text>
+          <Link href={paths.singlePatient(row.id)}>
+            <Flex py={4}>
+              <Image
+                src={row.imageLink ? row.imageLink : "/profile.png"}
+                alt={row.name}
+                height="40"
+                width="40"
+              />
+              <Flex flexDir={"column"} ml={2}>
+                <Heading size={"sm"}>{row.name}</Heading>
+                <Text fontSize={"sm"}>{row.email}</Text>
+              </Flex>
             </Flex>
-          </Flex>
+          </Link>
         ),
       },
       {
         name: "Phone Number",
-        selector: (row) => row.phone,
+        selector: (row) => row.contact,
       },
       {
         name: "Address",
@@ -104,33 +122,30 @@ export default function AdminPost() {
 
       {
         name: "Action",
-        cell: (row: Post) => {
+        cell: (row: Patient) => {
           return (
             <Flex>
-              <Tooltip label="Update the Patient" aria-label="Edit Patient">
-                <Link href={paths.editPatient(row._id)}>
+              <Menu>
+                <MenuButton display={"flex"} alignContent="center">
                   <IconButton
-                    size="sm"
-                    colorScheme="green"
-                    ml={1}
-                    aria-label="Edit Patient"
-                    icon={<FiEdit />}
+                    aria-label="options"
+                    icon={<FiMoreHorizontal />}
                   />
-                </Link>
-              </Tooltip>
-              <Tooltip label="Delete the Patient" aria-label="Delete Patient">
-                <IconButton
-                  ml={1}
-                  size="sm"
-                  aria-label="Delete"
-                  colorScheme={"red"}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    // return handleModalOpen(vaccine.id);
-                  }}
-                  icon={<AiOutlineDelete />}
-                />
-              </Tooltip>
+                </MenuButton>
+                <Portal>
+                  <MenuList>
+                    <MenuItem as={Link} href={paths.editPatient(row.id)}>
+                      <FiEdit /> Edit
+                    </MenuItem>
+                    <MenuItem>
+                      <AiOutlineDelete /> View
+                    </MenuItem>
+                    <MenuItem>
+                      <AiOutlineDelete /> Delete
+                    </MenuItem>
+                  </MenuList>
+                </Portal>
+              </Menu>
             </Flex>
           );
         },
@@ -141,8 +156,8 @@ export default function AdminPost() {
   );
 
   return (
-    <DashboardLayout bgColor="white">
-      <Container width="100%" maxW={"full"} mx={"auto"}>
+    <DashboardLayout bgColor="gray.100">
+      <Container width="100%" maxW="full" p={0}>
         <Flex
           alignItems={"center"}
           justifyContent="space-between"
@@ -179,14 +194,16 @@ export default function AdminPost() {
 
         <Flex
           justifyContent="space-between"
-          border="1px solid"
+          borderTop="1px solid"
+          borderBottom="1px solid"
           borderColor={"gray.200"}
           py={4}
+          px={4}
         >
           <Flex alignItems={"baseline"}>
             <Flex alignItems={"baseline"} mr={6}>
               <Heading mr={2} color="blue.400">
-                76
+                {total}
               </Heading>
               <Text>patients</Text>
             </Flex>
@@ -215,11 +232,12 @@ export default function AdminPost() {
             </Button>
           </Flex>
         </Flex>
-        <Box mx="4">
-          {/* <DataTable
+        <Box mx="4" maxW={"100%"}>
+          <DataTable
             data={patients}
             columns={columns}
-            selectableRows={true}
+            selectableRows={false}
+            style={{ minHeight: "500px" }}
             onSelectedRowsChange={({ selectedCount }) => {
               dispatch(handleSelectedRowsChange({ selectedCount }));
             }}
@@ -233,12 +251,13 @@ export default function AdminPost() {
             }}
             paginationRowsPerPageOptions={paginationRowsPerPage}
             // selectableRowsComponent={<input type="checkbox" />}
+            customStyles={customStyles}
             pagination
             paginationServer
             persistTableHead
             highlightOnHover
             pointerOnHover
-          /> */}
+          />
         </Box>
       </Container>
     </DashboardLayout>

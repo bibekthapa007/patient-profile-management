@@ -18,8 +18,6 @@ import {
   Textarea,
   VStack,
 } from "@chakra-ui/react";
-import Head from "next/head";
-import Image from "next/image";
 import { useRouter } from "next/router";
 
 import { useAppDispatch, useAppSelector } from "store/hook";
@@ -95,7 +93,7 @@ export default function SinglePatient({}) {
                   <SimpleGrid columns={3} spacing={4}>
                     <InfoItem heading="Gender" text="Male" />
                     <InfoItem heading="Birthday" text="2056/07/10" />
-                    <InfoItem heading="Phone Number" text={patient.phone} />
+                    <InfoItem heading="Contact Number" text={patient.contact} />
                     <InfoItem heading="Street Address" text={patient.address} />
                     <InfoItem heading="City" text="Kathmandu" />
                     <InfoItem heading="Zip Code" text="4001" />

@@ -2,18 +2,21 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { Button } from "@chakra-ui/button";
-import { Flex, Heading, Text, Box } from "@chakra-ui/layout";
 import {
   FormControl,
   FormLabel,
   FormErrorMessage,
 } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
+import { Select, Textarea } from "@chakra-ui/react";
+import { Flex, Heading, Text, Box, SimpleGrid } from "@chakra-ui/layout";
+
+import paths from "utils/paths";
 
 import { useAppDispatch, useAppSelector } from "store/hook";
 import { checkFileSize, checkMimeType, maxSelectFile } from "utils/image";
-import paths from "utils/paths";
 import { createPatient, updatePatient } from "features/patient/PatientSlice";
+
 import { PatientForm, PatientResponse } from "types/patient";
 
 export default function CreatePatientForm() {
@@ -47,7 +50,7 @@ export default function CreatePatientForm() {
         let payload = data.payload as PatientResponse;
         let requestStatus = data.meta.requestStatus as string;
         if (requestStatus === "fulfilled") {
-          let id = payload.patient._id;
+          let id = payload.patient.id;
           if (id) {
             router.push(paths.editPatient(id));
           }
@@ -77,7 +80,7 @@ export default function CreatePatientForm() {
           {patientId ? "Update Patient" : "Create Patient"}
         </Heading>
 
-        <Flex>
+        <SimpleGrid columns={2} spacing={10}>
           <FormControl
             mb={4}
             id="name"
@@ -98,9 +101,9 @@ export default function CreatePatientForm() {
               </FormErrorMessage>
             )}
           </FormControl>
+
           <FormControl
             mb={4}
-            ml={6}
             id="email"
             isInvalid={Boolean(errors.email)}
             isRequired
@@ -119,32 +122,32 @@ export default function CreatePatientForm() {
               </FormErrorMessage>
             )}
           </FormControl>
-        </Flex>
+        </SimpleGrid>
 
-        <Flex>
+        <SimpleGrid columns={2} spacing={10}>
           <FormControl
             mb={4}
             id="phone"
-            isInvalid={Boolean(errors.phone)}
+            isInvalid={Boolean(errors.contact)}
             isRequired
           >
-            <FormLabel>Phone no.</FormLabel>
+            <FormLabel>Contact no.</FormLabel>
             <Input
               borderColor="gray.300"
-              isInvalid={Boolean(errors.phone)}
-              {...register("phone", {
+              isInvalid={Boolean(errors.contact)}
+              {...register("contact", {
                 required: "Please enter phone no.",
               })}
             />
-            {errors.phone && (
+            {errors.contact && (
               <FormErrorMessage>
-                {errors.phone?.message as string}
+                {errors.contact?.message as string}
               </FormErrorMessage>
             )}
           </FormControl>
+
           <FormControl
             mb={4}
-            ml={6}
             id="dob"
             isInvalid={Boolean(errors.dob)}
             isRequired
@@ -164,9 +167,33 @@ export default function CreatePatientForm() {
               </FormErrorMessage>
             )}
           </FormControl>
-        </Flex>
+        </SimpleGrid>
 
-        <Flex>
+        <SimpleGrid columns={2} spacing={10}>
+          <FormControl
+            mb={4}
+            id="phone"
+            isInvalid={Boolean(errors.contact)}
+            isRequired
+          >
+            <FormLabel>Gender.</FormLabel>
+            <Select
+              placeholder="Select gender"
+              {...register("gender", {
+                required: "Please enter Dob.",
+              })}
+            >
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+              <option value="O">Others</option>
+            </Select>
+            {errors.contact && (
+              <FormErrorMessage>
+                {errors.contact?.message as string}
+              </FormErrorMessage>
+            )}
+          </FormControl>
+
           <FormControl
             mb={4}
             id="address"
@@ -187,7 +214,28 @@ export default function CreatePatientForm() {
               </FormErrorMessage>
             )}
           </FormControl>
-        </Flex>
+        </SimpleGrid>
+
+        <FormControl
+          mb={4}
+          id="notes"
+          isInvalid={Boolean(errors.address)}
+          isRequired
+        >
+          <FormLabel>Notes</FormLabel>
+          <Textarea
+            borderColor="gray.300"
+            isInvalid={Boolean(errors.address)}
+            {...register("notes", {
+              required: "Please enter notes.",
+            })}
+          />
+          {errors.notes && (
+            <FormErrorMessage>
+              {errors.notes?.message as string}
+            </FormErrorMessage>
+          )}
+        </FormControl>
 
         <FormLabel>Add Image</FormLabel>
 
