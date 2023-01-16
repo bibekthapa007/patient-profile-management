@@ -7,10 +7,12 @@ import camelcaseKeys from 'camelcase-keys';
 
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
-import { AuthModule } from './modules/auth/auth.module';
-import { UsersModule } from './modules/users/users.module';
-import { PatientsModule } from './modules/patients/patients.module';
-import { LoggerMiddleware } from './middlewares/logger/logger.middleware';
+
+import { AuthModule } from '@/modules/auth/auth.module';
+import { UsersModule } from '@/modules/users/users.module';
+import { PatientsModule } from '@/modules/patients/patients.module';
+
+import { LoggerMiddleware } from '@/middlewares/logger/logger.middleware';
 
 @Module({
   imports: [
