@@ -21,14 +21,14 @@ export class PatientsService {
     return { patients, total };
   }
 
-  public async getPatientById(id: Number) {
+  public async getPatientById(id: number) {
     const [patient] = await this.patients.getById(id);
 
     return { patient };
   }
 
   public async createPatient(patientBody: CreatePatientDTO) {
-    let [oldpatient] = await this.patients.getByEmail(patientBody.email);
+    const [oldpatient] = await this.patients.getByEmail(patientBody.email);
 
     if (oldpatient) {
       throw new BadRequestException(
@@ -36,28 +36,28 @@ export class PatientsService {
       );
     }
 
-    let [patientId] = await this.patients.create(patientBody);
+    const [patientId] = await this.patients.create(patientBody);
 
-    let [createdPatient] = await this.patients.getById(patientId);
+    const [createdPatient] = await this.patients.getById(patientId);
 
     return { patient: createdPatient };
   }
 
-  public async updatePatient(patientId: Number, patientBody: UpdatePatientDTO) {
+  public async updatePatient(patientId: number, patientBody: UpdatePatientDTO) {
     delete patientBody.file;
 
-    let updatedPatientId = await this.patients.updateById(
+    const updatedPatientId = await this.patients.updateById(
       patientId,
       patientBody,
     );
 
-    let [updatedPatient] = await this.patients.getById(updatedPatientId);
+    const [updatedPatient] = await this.patients.getById(updatedPatientId);
 
     return { patient: updatedPatient };
   }
 
-  public async deletePatient(patientId: Number) {
-    let [patient] = await this.patients.getById(patientId);
+  public async deletePatient(patientId: number) {
+    const [patient] = await this.patients.getById(patientId);
 
     if (!patient) {
       throw new NotFoundException(`Patient with id ${patientId} was not Found`);

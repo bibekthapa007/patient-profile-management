@@ -20,7 +20,7 @@ export class User extends BaseModel {
     return this.table().select('*');
   }
 
-  getById(id: Number): Promise<UserData[]> {
+  getById(id: number): Promise<UserData[]> {
     return this.table().where({ id });
   }
 
@@ -32,11 +32,11 @@ export class User extends BaseModel {
     return this.table().where({ refreshToken });
   }
 
-  updateById(id: Number, patientBody: UpdateUserDTO) {
+  updateById(id: number, patientBody: UpdateUserDTO) {
     return this.table().update(patientBody).where({ id });
   }
 
-  deleteById(id: Number) {
+  deleteById(id: number) {
     return this.table().delete().where({ id });
   }
 }

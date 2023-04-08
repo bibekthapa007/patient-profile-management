@@ -23,7 +23,7 @@ export class Patient extends BaseModel {
     return this.table().count('* as total');
   }
 
-  getById(id: Number) {
+  getById(id: number) {
     return this.table().where({ id: id });
   }
 
@@ -31,7 +31,7 @@ export class Patient extends BaseModel {
     return this.table().where({ email });
   }
 
-  updateById(id: Number, patientBody: UpdatePatientDTO) {
+  updateById(id: number, patientBody: UpdatePatientDTO) {
     console.log(patientBody, 'patientBody');
     const query = this.table().update(patientBody).where({ id });
 
@@ -39,7 +39,7 @@ export class Patient extends BaseModel {
     return query;
   }
 
-  deleteById(id: Number) {
+  deleteById(id: number) {
     return this.table().delete().where({ id: id });
   }
 }

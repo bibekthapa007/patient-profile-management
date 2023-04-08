@@ -9,7 +9,7 @@ import { UserData } from '@/common/interface/user';
 export class UsersService {
   constructor(private users: User) {}
 
-  async getById(id: Number): Promise<UserData> {
+  async getById(id: number): Promise<UserData> {
     const [user] = await this.users.getById(id);
 
     if (!user) {
@@ -28,23 +28,23 @@ export class UsersService {
   }
 
   public async createUser(userBody: CreateUserDTO) {
-    let [patientId] = await this.users.create(userBody);
+    const [patientId] = await this.users.create(userBody);
 
-    let [createdPatient] = await this.users.getById(patientId);
+    const [createdPatient] = await this.users.getById(patientId);
 
     return createdPatient;
   }
 
-  public async updateUser(userId: Number, patientBody: UpdateUserDTO) {
-    let updatedUserId = await this.users.updateById(userId, patientBody);
+  public async updateUser(userId: number, patientBody: UpdateUserDTO) {
+    const updatedUserId = await this.users.updateById(userId, patientBody);
 
-    let [updatedUser] = await this.users.getById(updatedUserId);
+    const [updatedUser] = await this.users.getById(updatedUserId);
 
     return updatedUser;
   }
 
-  public async deleteUser(userId: Number) {
-    let [user] = await this.users.getById(userId);
+  public async deleteUser(userId: number) {
+    const [user] = await this.users.getById(userId);
 
     if (!user) {
       throw new NotFoundException(`User with id ${userId} was not Found`);

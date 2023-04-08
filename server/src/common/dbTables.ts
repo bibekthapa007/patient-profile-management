@@ -1,2 +1,2 @@
-export const PATIENTS = "patients"
-export const USERS = "users"
+export const PATIENTS = 'patients';
+export const USERS = 'users';

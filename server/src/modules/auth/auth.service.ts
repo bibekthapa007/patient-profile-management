@@ -64,7 +64,7 @@ export class AuthService {
   }
 
   async localSignUp(userBody: CreateUserDTO) {
-    let [userExists] = await this.usersService.getByEmail(userBody.email);
+    const [userExists] = await this.usersService.getByEmail(userBody.email);
 
     if (userExists) {
       throw new ConflictException(`User with email ${userBody.email} exists.`);
@@ -85,7 +85,7 @@ export class AuthService {
   }
 
   async localSignIn(userBody: UserLoginDTO) {
-    let [user] = await this.usersService.getByEmail(userBody.email);
+    const [user] = await this.usersService.getByEmail(userBody.email);
 
     if (!user) {
       throw new ConflictException(
