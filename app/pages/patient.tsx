@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useEffect, useMemo, useState } from 'react';
 import {
   Box,
   Button,
@@ -22,11 +22,7 @@ import {
   Spinner,
   Text,
 } from '@chakra-ui/react';
-
 import DataTable, { TableColumn } from 'react-data-table-component';
-import { FiEdit, FiMoreHorizontal, FiMoreVertical } from 'react-icons/fi';
-import { AiOutlineDelete } from 'react-icons/ai';
-import { HiOutlineX, HiSearch, HiPlus } from 'react-icons/hi';
 
 import { useAppDispatch, useAppSelector } from 'store/hook';
 // import {
@@ -36,12 +32,15 @@ import { useAppDispatch, useAppSelector } from 'store/hook';
 // } from "features/adminPost/AdminPostSlice";
 import { fetchPatients, initPatients } from 'features/patient/PatientSlice';
 
+import paths from 'utils/paths';
+import useDebounce from 'hooks/useDebounce';
 import DashboardLayout from 'components/DashboardLayout';
 
-import paths from 'utils/paths';
-
 import { Patient } from 'types/patient';
-import useDebounce from 'hooks/useDebounce';
+
+import { AiOutlineDelete } from 'react-icons/ai';
+import { HiOutlineX, HiSearch, HiPlus } from 'react-icons/hi';
+import { FiEdit, FiMoreHorizontal, FiMoreVertical } from 'react-icons/fi';
 
 const customStyles = {
   table: {

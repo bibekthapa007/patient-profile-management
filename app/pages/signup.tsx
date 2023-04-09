@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import {
   Box,
@@ -12,12 +13,12 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
-import Link from 'next/link';
 
+import paths from 'utils/paths';
 import { signup } from 'features/auth/AuthSlice';
 import { useAppDispatch, useAppSelector } from 'store/hook';
+
 import { SigninFrom } from 'types/auth';
-import paths from 'utils/paths';
 
 export default function SignUpPage() {
   const router = useRouter();

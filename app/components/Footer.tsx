@@ -1,13 +1,15 @@
-import { Box, Container, Flex, Heading, Text } from '@chakra-ui/layout';
-import { Button } from '@chakra-ui/react';
-import { HiChevronUp } from 'react-icons/hi';
 import Link from 'next/link';
+import { Button } from '@chakra-ui/react';
+import { Box, Container, Flex, Heading, Text } from '@chakra-ui/layout';
+
+import { HiChevronUp } from 'react-icons/hi';
 
 function Footer() {
   const handleSrollToTop = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     window.scrollTo(0, 0);
   };
+
   return (
     <Box bg="gray.200" color="black">
       <Container maxW="container.xl">

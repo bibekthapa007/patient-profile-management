@@ -1,4 +1,3 @@
-import { Divider, Stack, Box, Grid } from '@chakra-ui/layout';
 import {
   Drawer,
   DrawerCloseButton,
@@ -7,20 +6,24 @@ import {
   DrawerHeader,
   DrawerOverlay,
 } from '@chakra-ui/modal';
-import { useDisclosure } from '@chakra-ui/hooks';
-import { CgMenuGridO, CgOptions } from 'react-icons/cg';
-import { AiOutlineHome } from 'react-icons/ai';
-import { BsPerson } from 'react-icons/bs';
-import { BiStore, BiLogOut } from 'react-icons/bi';
-
-import paths from 'utils/paths';
-import { useAppDispatch, useAppSelector } from 'store/hook';
-import Router, { useRouter } from 'next/router';
-import { logout } from 'features/auth/AuthSlice';
-import { Spinner } from '@chakra-ui/react';
 import { useEffect } from 'react';
-import NavItem from '../NavItem';
+import { Spinner } from '@chakra-ui/react';
+import Router, { useRouter } from 'next/router';
+import { useDisclosure } from '@chakra-ui/hooks';
+
+import { Divider, Stack, Box, Grid } from '@chakra-ui/layout';
+
 import Navbar from '../Navbar';
+import paths from 'utils/paths';
+import NavItem from '../NavItem';
+
+import { logout } from 'features/auth/AuthSlice';
+import { useAppDispatch, useAppSelector } from 'store/hook';
+
+import { BsPerson } from 'react-icons/bs';
+import { AiOutlineHome } from 'react-icons/ai';
+import { BiStore, BiLogOut } from 'react-icons/bi';
+import { CgMenuGridO, CgOptions } from 'react-icons/cg';
 
 interface AdminLayoutProps {
   children: React.ReactNode | React.ReactNode[];

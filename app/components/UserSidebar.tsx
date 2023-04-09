@@ -1,6 +1,7 @@
 import React from 'react';
-import paths from '../utils/paths';
+
 import Link from './Link';
+import paths from 'utils/paths';
 
 function UserSidebar() {
   return (

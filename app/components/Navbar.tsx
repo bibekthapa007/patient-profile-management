@@ -2,20 +2,19 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { Select } from '@chakra-ui/react';
 import { Avatar } from '@chakra-ui/avatar';
 import { Button, IconButton } from '@chakra-ui/button';
-import { Box, Container, Flex, Heading, Text, Spacer } from '@chakra-ui/layout';
-import { Select } from '@chakra-ui/react';
-
 import { Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/menu';
+import { Box, Container, Flex, Heading, Text, Spacer } from '@chakra-ui/layout';
+
+import paths from 'utils/paths';
+import { logout } from 'features/auth/AuthSlice';
+import { setLang } from 'features/i18n/i18nSlice';
+import { useAppDispatch, useAppSelector } from 'store/hook';
 
 import { AiOutlineMenu } from 'react-icons/ai';
 import { IoIosArrowDown, IoMdMail } from 'react-icons/io';
-
-import paths from 'utils/paths';
-import { useAppDispatch, useAppSelector } from 'store/hook';
-import { logout } from 'features/auth/AuthSlice';
-import { setLang } from 'features/i18n/i18nSlice';
 
 import NepaliIcon from '../public/nepali.svg';
 import EnglishIcon from '../public/english.svg';
@@ -31,6 +30,7 @@ function Navbar({ admin, onOpen }: NavbarProps) {
 
   const { lang, supportedLangs } = useAppSelector((state) => state.i18n);
   const imageLink = user?.imageLink;
+
   return (
     <Box
       borderBottom="1px solid"

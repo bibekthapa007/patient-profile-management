@@ -13,15 +13,15 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
-
 import { useForm } from 'react-hook-form';
 
-import { useAppDispatch, useAppSelector } from 'store/hook';
 import { updateUser } from 'features/auth/AuthSlice';
-import DashboardLayout from 'components/DashboardLayout';
-import { checkFileSize, checkMimeType, maxSelectFile } from 'utils/image';
-import { UserProfileForm } from 'types/auth';
 import ProtectedRoute from 'components/ProtectedRoute';
+import DashboardLayout from 'components/DashboardLayout';
+import { useAppDispatch, useAppSelector } from 'store/hook';
+import { checkFileSize, checkMimeType, maxSelectFile } from 'utils/image';
+
+import { UserProfileForm } from 'types/auth';
 
 const isEqual = (arr1: string[] | undefined, arr2: string[] | undefined) => {
   let same = true;
@@ -43,8 +43,6 @@ export default function Setting() {
   const { user, loading, updating, updateError } = useAppSelector(
     (state) => state.auth,
   );
-
-  const { categories } = useAppSelector((state) => state.category);
 
   const [oldRelevent, setOldRelevent] = useState(user?.releventCategories);
   const [relevent, setRelevent] = useState(user?.releventCategories);
@@ -79,6 +77,7 @@ export default function Setting() {
 
   const fileChangedHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
+
     if (target.files && target.files.length > 0) {
       if (
         maxSelectFile(event) &&
@@ -101,6 +100,7 @@ export default function Setting() {
     if (!relevent) {
       return console.log('No relevent found.');
     }
+
     if (checked) {
       if (!relevent.includes(categoryId)) {
         setRelevent([...relevent, categoryId]);
@@ -109,9 +109,11 @@ export default function Setting() {
       if (relevent.length === 1) {
         return alert('There must be at least one category');
       }
+
       const newRelevent = relevent.filter(
         (category) => category !== categoryId,
       );
+
       setRelevent(newRelevent);
     }
   };
@@ -173,29 +175,6 @@ export default function Setting() {
                 placeholder="Description"
               />
             </FormControl>
-
-            <Box my={6}>
-              <Heading size="md" mb={2} fontWeight={500}>
-                Relevent Category
-              </Heading>
-              <Flex flexWrap="wrap">
-                {categories.map((category) => {
-                  return (
-                    <Checkbox
-                      key={category._id}
-                      isChecked={relevent?.includes(category._id)}
-                      mr={4}
-                      onChange={(e) => {
-                        console.log(e.target.checked);
-                        handleRelevent(category._id, e.target.checked);
-                      }}
-                    >
-                      {category.title}
-                    </Checkbox>
-                  );
-                })}
-              </Flex>
-            </Box>
 
             <Box my={6}>
               <Heading size="md" mb={2} fontWeight={500}>

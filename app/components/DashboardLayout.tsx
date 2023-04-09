@@ -1,21 +1,13 @@
-import {
-  Divider,
-  Stack,
-  Box,
-  Grid,
-  Flex,
-  Heading,
-  Text,
-} from '@chakra-ui/layout';
-import {
-  Drawer,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerOverlay,
-} from '@chakra-ui/modal';
 import { useEffect, useState } from 'react';
 import Router, { useRouter } from 'next/router';
 import { useDisclosure } from '@chakra-ui/hooks';
+
+import {
+  Drawer,
+  DrawerContent,
+  DrawerOverlay,
+  DrawerCloseButton,
+} from '@chakra-ui/modal';
 import {
   Avatar,
   Button,
@@ -27,6 +19,15 @@ import {
   MenuDivider,
   Spinner,
 } from '@chakra-ui/react';
+import {
+  Divider,
+  Stack,
+  Box,
+  Grid,
+  Flex,
+  Heading,
+  Text,
+} from '@chakra-ui/layout';
 
 import {
   AiOutlineMenu,

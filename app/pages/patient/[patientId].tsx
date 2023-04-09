@@ -18,13 +18,12 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import Link from 'next/link';
-import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-
-import { useAppDispatch, useAppSelector } from 'store/hook';
+import React, { useEffect } from 'react';
 
 import Card from 'components/Card';
 import DashboardLayout from 'components/DashboardLayout';
+import { useAppDispatch, useAppSelector } from 'store/hook';
 import { fetchPatient } from 'features/patient/PatientSlice';
 
 function InfoItem({ heading, text }: { heading: string; text: string }) {

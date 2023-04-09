@@ -1,26 +1,18 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Grid,
-  Heading,
-  Img,
-  SimpleGrid,
-  Text,
-} from '@chakra-ui/react';
-import { useEffect } from 'react';
-import Head from 'next/head';
 import Link from 'next/link';
+import Head from 'next/head';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { Box, SimpleGrid } from '@chakra-ui/react';
 
-import { useAppDispatch, useAppSelector } from 'store/hook';
 import Slider from 'components/Slider';
-import { NextArrow, PrevArrow } from 'components/SliderArrow';
 import DashboardLayout from 'components/DashboardLayout';
+import ProtectedRoute from 'components/ProtectedRoute';
+import { useAppDispatch, useAppSelector } from 'store/hook';
+import { NextArrow, PrevArrow } from 'components/SliderArrow';
 import { selectTranslations, setLang } from 'features/i18n/i18nSlice';
+
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import ProtectedRoute from 'components/ProtectedRoute';
 
 function InfoCard() {
   return (

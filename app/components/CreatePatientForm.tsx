@@ -1,24 +1,29 @@
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { useForm } from 'react-hook-form';
-import { Button } from '@chakra-ui/button';
+import {
+  Select,
+  Spinner,
+  Input,
+  Button,
+  Textarea,
+  IconButton,
+} from '@chakra-ui/react';
 import {
   FormControl,
   FormLabel,
   FormErrorMessage,
 } from '@chakra-ui/form-control';
-import { Input } from '@chakra-ui/input';
-import { Select, Spinner, Textarea, IconButton } from '@chakra-ui/react';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useForm } from 'react-hook-form';
 import { Flex, Heading, Text, Box, SimpleGrid } from '@chakra-ui/layout';
 
 import paths from 'utils/paths';
-
 import { useAppDispatch, useAppSelector } from 'store/hook';
 import { checkFileSize, checkMimeType, maxSelectFile } from 'utils/image';
 import { createPatient, updatePatient } from 'features/patient/PatientSlice';
 
-import { PatientForm, PatientResponse } from 'types/patient';
 import { IoMdArrowBack } from 'react-icons/io';
+
+import { PatientForm, PatientResponse } from 'types/patient';
 
 export default function CreatePatientForm() {
   const router = useRouter();
@@ -291,13 +296,13 @@ export default function CreatePatientForm() {
               alt="category"
               className="profile-user-img img-fluid"
               style={{
-                cursor: "pointer",
-                height: "auto",
-                minHeight: "150px",
-                maxHeight: "250px",
-                width: "auto",
-                border: "2px solid #ddd",
-                objectFit: "cover",
+                cursor: 'pointer',
+                height: 'auto',
+                minHeight: '150px',
+                maxHeight: '250px',
+                width: 'auto',
+                border: '2px solid #ddd',
+                objectFit: 'cover',
               }}
               src={URL.createObjectURL(file)}
             />
@@ -330,8 +335,8 @@ export default function CreatePatientForm() {
             colorScheme="blue"
             variant="solid"
           >
-            {patientId && (!updating ? "Save" : "Saving")}
-            {!patientId && (!creating ? "Create" : "Creating")}
+            {patientId && (!updating ? 'Save' : 'Saving')}
+            {!patientId && (!creating ? 'Create' : 'Creating')}
           </Button>
         </Flex>
       </form>

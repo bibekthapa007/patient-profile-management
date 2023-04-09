@@ -1,5 +1,6 @@
-import React, { useState, useEffect, ReactNode } from 'react';
 import SlickSlider, { Settings } from 'react-slick';
+import React, { useState, useEffect, ReactNode } from 'react';
+
 import ErrorBoundary from './ErrorBoundary';
 
 interface SliderProps {

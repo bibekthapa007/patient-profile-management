@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Text } from '@chakra-ui/react';
 
-import { useAppDispatch, useAppSelector } from 'store/hook';
-import { fetchUserData } from 'features/auth/AuthSlice';
 import AdminLayout from 'components/admin/AdminLayout';
+import { fetchUserData } from 'features/auth/AuthSlice';
+import { useAppDispatch, useAppSelector } from 'store/hook';
 
 export default function Home() {
   const dispatch = useAppDispatch();

@@ -10,10 +10,9 @@ import type { AppProps } from 'next/app';
 import { Provider, useDispatch } from 'react-redux';
 import { createStandaloneToast } from '@chakra-ui/toast';
 
+import { wrapper } from 'store/store';
 import { useAppDispatch } from 'store/hook';
-
 import { fetchUserData } from 'features/auth/AuthSlice';
-import { wrapper } from '../store/store';
 
 const { ToastContainer } = createStandaloneToast();
 
