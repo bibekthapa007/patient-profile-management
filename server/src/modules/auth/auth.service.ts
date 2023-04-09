@@ -70,6 +70,10 @@ export class AuthService {
       throw new ConflictException(`User with email ${userBody.email} exists.`);
     }
 
+    if (!userBody.name) {
+      userBody.name = userBody.email.split('@')[0];
+    }
+
     const hash = await this.hashData(userBody.password);
 
     const newUser = await this.usersService.createUser({

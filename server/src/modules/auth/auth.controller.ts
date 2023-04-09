@@ -1,12 +1,12 @@
+import { Request } from 'express';
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
 import { UserLoginDTO } from '../users/dto/user-login.dto';
 import { CreateUserDTO } from '../users/dto/create-user.dto';
-import { AccessTokenGuard } from '@/common/guards/AccessTokenGuard';
-import { Request } from 'express';
-import { User } from '../users/model/users.model';
+
 import { UserData } from '@/common/interface/user';
+import { AccessTokenGuard } from '@/common/guards/AccessTokenGuard';
 import { RefreshTokenGuard } from '@/common/guards/RefreshTokenGuard';
 
 @Controller('api/auth')

@@ -11,6 +11,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 import { AccessTokenGuard } from '@/common/guards/AccessTokenGuard';
 
@@ -18,7 +19,6 @@ import { PatientsService } from './patients.service';
 
 import { CreatePatientDTO } from './dto/create-patient.dto';
 import { UpdatePatientDTO } from './dto/update-patient.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
 
 @UseGuards(AccessTokenGuard)
 @Controller('api/patients')

@@ -1,6 +1,6 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { KnexModule } from 'nest-knexjs';
 import { ConfigModule } from '@nestjs/config';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 
 import { snakeCase } from 'change-case';
 import camelcaseKeys from 'camelcase-keys';
@@ -23,9 +23,8 @@ import { LoggerMiddleware } from '@/middlewares/logger/logger.middleware';
 
     KnexModule.forRoot({
       config: {
-        client: 'mysql',
+        client: 'mysql2',
         version: '8.0',
-        useNullAsDefault: true,
         connection: {
           host: process.env.DB_HOST,
           port: Number(process.env.DB_PORT),
@@ -60,7 +59,7 @@ import { LoggerMiddleware } from '@/middlewares/logger/logger.middleware';
             return result;
           }
 
-          return camelcaseKeys(result, { deep: true });
+          return camelcaseKeys(result as any, { deep: true });
         },
       },
     }),
