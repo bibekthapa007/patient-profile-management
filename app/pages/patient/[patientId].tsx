@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import {
   Avatar,
   Box,
@@ -17,25 +16,26 @@ import {
   Text,
   Textarea,
   VStack,
-} from "@chakra-ui/react";
-import { useRouter } from "next/router";
+} from '@chakra-ui/react';
+import Link from 'next/link';
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
-import { useAppDispatch, useAppSelector } from "store/hook";
-import { fetchMorePosts, fetchPost } from "features/post/PostSlice";
-import DashboardLayout from "components/DashboardLayout";
-import Card from "components/Card";
-import Link from "next/link";
-import { fetchPatient } from "features/patient/PatientSlice";
+import { useAppDispatch, useAppSelector } from 'store/hook';
+
+import Card from 'components/Card';
+import DashboardLayout from 'components/DashboardLayout';
+import { fetchPatient } from 'features/patient/PatientSlice';
 
 function InfoItem({ heading, text }: { heading: string; text: string }) {
   return (
     <Flex
       flexDir="column"
-      borderBottom={"1px solid"}
+      borderBottom="1px solid"
       borderColor="gray.100"
       py={3}
     >
-      <Heading size="sm" color={"gray.500"} py={2}>
+      <Heading size="sm" color="gray.500" py={2}>
         {heading}
       </Heading>
       <Heading size="sm">{text}</Heading>
@@ -44,11 +44,11 @@ function InfoItem({ heading, text }: { heading: string; text: string }) {
 }
 
 export default function SinglePatient({}) {
-  let dispatch = useAppDispatch();
-  let router = useRouter();
-  let patientId = router.query.patientId as string;
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const patientId = router.query.patientId as string;
   const { patient, patientLoading, patientError } = useAppSelector(
-    (state) => state.patient
+    (state) => state.patient,
   );
 
   useEffect(() => {
@@ -59,11 +59,11 @@ export default function SinglePatient({}) {
     <DashboardLayout>
       <Container maxW="container.xl">
         {!patientLoading && patient && (
-          <Grid templateColumns={"5fr 2fr"} gap="4">
+          <Grid templateColumns="5fr 2fr" gap="4" my="4">
             <VStack spacing="4">
-              <Grid templateColumns={"1fr 2fr"} width="100%" gap="1">
+              <Grid templateColumns="1fr 2fr" width="100%" gap="1">
                 <Card>
-                  <Flex flexDir={"column"} alignItems="center" my={4} mx={2}>
+                  <Flex flexDir="column" alignItems="center" my={4} mx={2}>
                     <Avatar size="lg" />
                     <Heading size="md" mt={4}>
                       {patient.name}
@@ -105,11 +105,11 @@ export default function SinglePatient({}) {
 
               <Card>
                 <Tabs variant="unstyled">
-                  <TabList bgColor={"gray.100"} borderRadius={8} p="1">
+                  <TabList bgColor="gray.100" borderRadius={8} p="1">
                     {[
-                      "Upcoming Appointments",
-                      "Post Appointments",
-                      "Medical Reports",
+                      'Upcoming Appointments',
+                      'Post Appointments',
+                      'Medical Reports',
                     ].map((item, index) => {
                       return (
                         <Tab
@@ -117,9 +117,9 @@ export default function SinglePatient({}) {
                           fontSize="sm"
                           fontWeight={500}
                           _selected={{
-                            bgColor: "white",
-                            color: "blue",
-                            borderRadius: "8px",
+                            bgColor: 'white',
+                            color: 'blue',
+                            borderRadius: '8px',
                           }}
                         >
                           {item}
@@ -131,9 +131,9 @@ export default function SinglePatient({}) {
                     <TabPanel py={4}>
                       <Box
                         bg="gray.100"
-                        borderRadius={"lg"}
+                        borderRadius="lg"
                         position="relative"
-                        overflowY={"scroll"}
+                        overflowY="scroll"
                         p={4}
                         height="60vh"
                       >
@@ -148,7 +148,7 @@ export default function SinglePatient({}) {
                             .map((appointment, index) => {
                               return (
                                 <Card key={index}>
-                                  <Flex justifyContent={"space-between"} m={4}>
+                                  <Flex justifyContent="space-between" m={4}>
                                     <Box>
                                       <Heading size="sm"> 26 Nov 19</Heading>
                                       <Text>09:00-10:00</Text>
@@ -186,7 +186,7 @@ export default function SinglePatient({}) {
 
             <VStack spacing="4">
               <Card>
-                <Flex justifyContent={"space-between"}>
+                <Flex justifyContent="space-between">
                   <Heading size="sm">Notes</Heading>
                   <Link href="/">
                     <Text size="sm" color="blue">
@@ -194,10 +194,10 @@ export default function SinglePatient({}) {
                     </Text>
                   </Link>
                 </Flex>
-                <Textarea></Textarea>
+                <Textarea />
               </Card>
               <Card>
-                <Flex justifyContent={"space-between"}>
+                <Flex justifyContent="space-between">
                   <Heading size="sm">Files and documents</Heading>
                   <Link href="/">
                     <Text size="sm" color="blue">

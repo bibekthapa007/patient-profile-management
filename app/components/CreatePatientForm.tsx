@@ -1,28 +1,29 @@
-import { useEffect } from "react";
-import { useRouter } from "next/router";
-import { useForm } from "react-hook-form";
-import { Button } from "@chakra-ui/button";
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useForm } from 'react-hook-form';
+import { Button } from '@chakra-ui/button';
 import {
   FormControl,
   FormLabel,
   FormErrorMessage,
-} from "@chakra-ui/form-control";
-import { Input } from "@chakra-ui/input";
-import { Select, Textarea } from "@chakra-ui/react";
-import { Flex, Heading, Text, Box, SimpleGrid } from "@chakra-ui/layout";
+} from '@chakra-ui/form-control';
+import { Input } from '@chakra-ui/input';
+import { Select, Spinner, Textarea, IconButton } from '@chakra-ui/react';
+import { Flex, Heading, Text, Box, SimpleGrid } from '@chakra-ui/layout';
 
-import paths from "utils/paths";
+import paths from 'utils/paths';
 
-import { useAppDispatch, useAppSelector } from "store/hook";
-import { checkFileSize, checkMimeType, maxSelectFile } from "utils/image";
-import { createPatient, updatePatient } from "features/patient/PatientSlice";
+import { useAppDispatch, useAppSelector } from 'store/hook';
+import { checkFileSize, checkMimeType, maxSelectFile } from 'utils/image';
+import { createPatient, updatePatient } from 'features/patient/PatientSlice';
 
-import { PatientForm, PatientResponse } from "types/patient";
+import { PatientForm, PatientResponse } from 'types/patient';
+import { IoMdArrowBack } from 'react-icons/io';
 
 export default function CreatePatientForm() {
-  const dispatch = useAppDispatch();
   const router = useRouter();
-  const patientId = router.query.patientId;
+  const dispatch = useAppDispatch();
+  const { patientId } = router.query;
 
   const { patient, updating, updateError, creating, createError } =
     useAppSelector((state) => state.patient);
@@ -35,7 +36,7 @@ export default function CreatePatientForm() {
     formState: { isDirty, errors },
   } = useForm<PatientForm>();
 
-  const userFiles = watch("userFiles");
+  const userFiles = watch('userFiles');
   const file = userFiles && userFiles[0];
 
   useEffect(() => {
@@ -47,10 +48,12 @@ export default function CreatePatientForm() {
   const onSubmit = handleSubmit((data: any) => {
     if (!patientId) {
       dispatch(createPatient(data)).then((data) => {
-        let payload = data.payload as PatientResponse;
-        let requestStatus = data.meta.requestStatus as string;
-        if (requestStatus === "fulfilled") {
-          let id = payload.patient.id;
+        const payload = data.payload as PatientResponse;
+        const requestStatus = data.meta.requestStatus as string;
+
+        if (requestStatus === 'fulfilled') {
+          const { id } = payload.patient;
+
           if (id) {
             router.push(paths.editPatient(id));
           }
@@ -73,14 +76,25 @@ export default function CreatePatientForm() {
       }
     }
   };
-  return (
-    <Box pt={2} maxW="4xl" mx="auto">
-      <form onSubmit={onSubmit}>
-        <Heading fontSize="lg" mb={4} fontWeight="500">
-          {patientId ? "Update Patient" : "Create Patient"}
-        </Heading>
 
-        <SimpleGrid columns={2} spacing={10}>
+  return (
+    <Box pt={2} maxW="4xl" mx="auto" p="4" bg="white">
+      <form onSubmit={onSubmit}>
+        <Flex mb={4} alignItems="center">
+          <IconButton
+            size="md"
+            bg="white"
+            mr="2"
+            aria-label="Main Drawer"
+            onClick={(e) => history.back()}
+            icon={<IoMdArrowBack />}
+          />
+          <Heading fontSize="lg" fontWeight="500">
+            {patientId ? 'Update Patient' : 'Create Patient'}
+          </Heading>
+        </Flex>
+
+        <SimpleGrid columns={[1, 1, 2]} spacing={[0, 0, 10]}>
           <FormControl
             mb={4}
             id="name"
@@ -91,8 +105,8 @@ export default function CreatePatientForm() {
             <Input
               borderColor="gray.300"
               isInvalid={Boolean(errors.name)}
-              {...register("name", {
-                required: "Please enter name.",
+              {...register('name', {
+                required: 'Please enter name.',
               })}
             />
             {errors.name && (
@@ -112,8 +126,8 @@ export default function CreatePatientForm() {
             <Input
               borderColor="gray.300"
               isInvalid={Boolean(errors.email)}
-              {...register("email", {
-                required: "Please enter email.",
+              {...register('email', {
+                required: 'Please enter email.',
               })}
             />
             {errors.email && (
@@ -124,7 +138,7 @@ export default function CreatePatientForm() {
           </FormControl>
         </SimpleGrid>
 
-        <SimpleGrid columns={2} spacing={10}>
+        <SimpleGrid columns={[1, 1, 2]} spacing={[0, 0, 10]}>
           <FormControl
             mb={4}
             id="phone"
@@ -135,8 +149,8 @@ export default function CreatePatientForm() {
             <Input
               borderColor="gray.300"
               isInvalid={Boolean(errors.contact)}
-              {...register("contact", {
-                required: "Please enter phone no.",
+              {...register('contact', {
+                required: 'Please enter phone no.',
               })}
             />
             {errors.contact && (
@@ -156,9 +170,9 @@ export default function CreatePatientForm() {
             <Input
               borderColor="gray.300"
               isInvalid={Boolean(errors.dob)}
-              type="datetime-local"
-              {...register("dob", {
-                required: "Please enter Dob.",
+              type="date"
+              {...register('dob', {
+                required: 'Please enter Dob.',
               })}
             />
             {errors.dob && (
@@ -169,18 +183,18 @@ export default function CreatePatientForm() {
           </FormControl>
         </SimpleGrid>
 
-        <SimpleGrid columns={2} spacing={10}>
+        <SimpleGrid columns={[1, 1, 2]} spacing={[0, 0, 10]}>
           <FormControl
             mb={4}
             id="phone"
             isInvalid={Boolean(errors.contact)}
             isRequired
           >
-            <FormLabel>Gender.</FormLabel>
+            <FormLabel>Gender</FormLabel>
             <Select
               placeholder="Select gender"
-              {...register("gender", {
-                required: "Please enter Dob.",
+              {...register('gender', {
+                required: 'Please enter Dob.',
               })}
             >
               <option value="M">Male</option>
@@ -204,8 +218,8 @@ export default function CreatePatientForm() {
             <Input
               borderColor="gray.300"
               isInvalid={Boolean(errors.address)}
-              {...register("address", {
-                required: "Please enter address.",
+              {...register('address', {
+                required: 'Please enter address.',
               })}
             />
             {errors.address && (
@@ -226,8 +240,8 @@ export default function CreatePatientForm() {
           <Textarea
             borderColor="gray.300"
             isInvalid={Boolean(errors.address)}
-            {...register("notes", {
-              required: "Please enter notes.",
+            {...register('notes', {
+              required: 'Please enter notes.',
             })}
           />
           {errors.notes && (
@@ -242,9 +256,9 @@ export default function CreatePatientForm() {
         <Input
           borderColor="gray.300"
           type="file"
-          accept={"image/*"}
+          accept={'image/*'}
           id="userFiles"
-          {...register("userFiles", {
+          {...register('userFiles', {
             required: false,
           })}
         />
@@ -267,7 +281,7 @@ export default function CreatePatientForm() {
           borderColor="gray.200"
           borderRadius="8px"
           onClick={() => {
-            let element = document.getElementById("userFiles");
+            const element = document.getElementById('userFiles');
             element && element.click();
           }}
         >
@@ -300,17 +314,24 @@ export default function CreatePatientForm() {
           {patientId && updateError && updateError}
         </Text>
 
-        <Flex justify="flex-end">
+        <Flex justify="flex-end" mb={2} mt={4}>
+          <Button
+            isLoading={patientId ? updating : creating}
+            mx={2}
+            variant="solid"
+          >
+            Cancel
+          </Button>
           <Button
             type="submit"
             isLoading={patientId ? updating : creating}
             mx={2}
+            disabled={!isDirty}
             colorScheme="blue"
             variant="solid"
-            mb={8}
           >
-            {patientId && (!updating ? "Update Patient" : "Updating")}
-            {!patientId && (!creating ? "Create Patient" : "Creating")}
+            {patientId && (!updating ? "Save" : "Saving")}
+            {!patientId && (!creating ? "Create" : "Creating")}
           </Button>
         </Flex>
       </form>

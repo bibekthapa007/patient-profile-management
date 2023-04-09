@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/button";
+import { Button } from '@chakra-ui/button';
 import {
   Modal,
   ModalBody,
@@ -7,7 +7,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-} from "@chakra-ui/modal";
+} from '@chakra-ui/modal';
 
 interface DeleteModalProps {
   adId: string;

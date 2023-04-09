@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import Head from "next/head";
+import { useEffect, useState } from 'react';
+import Head from 'next/head';
 import {
   Box,
   Button,
@@ -11,16 +11,17 @@ import {
   Heading,
   Input,
   Text,
-} from "@chakra-ui/react";
-import { useToast } from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
+  useToast,
+} from '@chakra-ui/react';
 
-import { useAppDispatch, useAppSelector } from "store/hook";
-import { updateUser } from "features/auth/AuthSlice";
-import DashboardLayout from "components/DashboardLayout";
-import { checkFileSize, checkMimeType, maxSelectFile } from "utils/image";
-import { UserProfileForm } from "types/auth";
-import ProtectedRoute from "components/ProtectedRoute";
+import { useForm } from 'react-hook-form';
+
+import { useAppDispatch, useAppSelector } from 'store/hook';
+import { updateUser } from 'features/auth/AuthSlice';
+import DashboardLayout from 'components/DashboardLayout';
+import { checkFileSize, checkMimeType, maxSelectFile } from 'utils/image';
+import { UserProfileForm } from 'types/auth';
+import ProtectedRoute from 'components/ProtectedRoute';
 
 const isEqual = (arr1: string[] | undefined, arr2: string[] | undefined) => {
   let same = true;
@@ -31,17 +32,16 @@ const isEqual = (arr1: string[] | undefined, arr2: string[] | undefined) => {
   arr1.map((data) => {
     if (!arr2.includes(data)) {
       same = false;
-      return;
     }
   });
   return same;
 };
 
 export default function Setting() {
-  let dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   const toast = useToast();
   const { user, loading, updating, updateError } = useAppSelector(
-    (state) => state.auth
+    (state) => state.auth,
   );
 
   const { categories } = useAppSelector((state) => state.category);
@@ -58,18 +58,18 @@ export default function Setting() {
     formState: { isDirty, errors },
   } = useForm<UserProfileForm>();
 
-  const userFiles = watch("userFiles");
+  const userFiles = watch('userFiles');
   const file = userFiles && userFiles[0];
 
   const onSubmit = handleSubmit((data: any) => {
     dispatch(
-      updateUser({ name: data.name, releventCategories: relevent })
+      updateUser({ name: data.name, releventCategories: relevent }),
     ).then((data) => {
-      let requestStatus = data.meta.requestStatus as string;
-      if (requestStatus === "fulfilled") {
+      const requestStatus = data.meta.requestStatus as string;
+      if (requestStatus === 'fulfilled') {
         toast({
-          title: "User updated successfully.",
-          status: "success",
+          title: 'User updated successfully.',
+          status: 'success',
           duration: 5000,
           isClosable: true,
         });
@@ -99,22 +99,20 @@ export default function Setting() {
 
   const handleRelevent = (categoryId: string, checked: boolean) => {
     if (!relevent) {
-      return console.log("No relevent found.");
+      return console.log('No relevent found.');
     }
     if (checked) {
       if (!relevent.includes(categoryId)) {
         setRelevent([...relevent, categoryId]);
       }
-    } else {
-      if (relevent.includes(categoryId)) {
-        if (relevent.length === 1) {
-          return alert("There must be at least one category");
-        }
-        let newRelevent = relevent.filter(
-          (category) => category !== categoryId
-        );
-        setRelevent(newRelevent);
+    } else if (relevent.includes(categoryId)) {
+      if (relevent.length === 1) {
+        return alert('There must be at least one category');
       }
+      const newRelevent = relevent.filter(
+        (category) => category !== categoryId,
+      );
+      setRelevent(newRelevent);
     }
   };
 
@@ -148,8 +146,8 @@ export default function Setting() {
                 borderColor="gray.300"
                 placeholder="Name"
                 isInvalid={Boolean(errors.name)}
-                {...register("name", {
-                  required: "Please enter name.",
+                {...register('name', {
+                  required: 'Please enter name.',
                 })}
               />
               {errors.name && (
@@ -164,8 +162,8 @@ export default function Setting() {
               isInvalid={Boolean(errors.email)}
               isDisabled
               isRequired
-              {...register("email", {
-                required: "Please enter email.",
+              {...register('email', {
+                required: 'Please enter email.',
               })}
             >
               <FormLabel>Email</FormLabel>
@@ -180,7 +178,7 @@ export default function Setting() {
               <Heading size="md" mb={2} fontWeight={500}>
                 Relevent Category
               </Heading>
-              <Flex flexWrap={"wrap"}>
+              <Flex flexWrap="wrap">
                 {categories.map((category) => {
                   return (
                     <Checkbox
@@ -224,7 +222,7 @@ export default function Setting() {
                 variant="solid"
                 mb={8}
               >
-                {updating ? "Updating" : "Update User"}
+                {updating ? 'Updating' : 'Update User'}
               </Button>
             </Flex>
           </form>

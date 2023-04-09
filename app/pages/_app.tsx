@@ -3,23 +3,23 @@ import {
   ChakraProvider,
   theme,
   CSSReset,
-} from "@chakra-ui/react";
-import Head from "next/head";
-import { useEffect } from "react";
-import type { AppProps } from "next/app";
-import { Provider, useDispatch } from "react-redux";
-import { createStandaloneToast } from "@chakra-ui/toast";
+} from '@chakra-ui/react';
+import Head from 'next/head';
+import { useEffect } from 'react';
+import type { AppProps } from 'next/app';
+import { Provider, useDispatch } from 'react-redux';
+import { createStandaloneToast } from '@chakra-ui/toast';
 
-import { wrapper } from "../store/store";
-import { useAppDispatch } from "store/hook";
+import { useAppDispatch } from 'store/hook';
 
-import { fetchUserData } from "features/auth/AuthSlice";
+import { fetchUserData } from 'features/auth/AuthSlice';
+import { wrapper } from '../store/store';
 
 const { ToastContainer } = createStandaloneToast();
 
 function App({ Component, ...rest }: AppProps) {
-  const title = Component.displayName || "Zendenta";
-  const meta = "Patient Profile Management.";
+  const title = Component.displayName || 'Zendenta';
+  const meta = 'Patient Profile Management.';
 
   const { store, props } = wrapper.useWrappedStore(rest);
   const { pageProps } = props;
@@ -54,7 +54,7 @@ interface MyProps {
 }
 
 function FetchAppData({ children }: MyProps) {
-  let dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchUserData());

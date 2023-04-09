@@ -1,23 +1,24 @@
-import React from "react";
-import { useRouter } from "next/router";
-import Link from "next/link";
-import { Avatar } from "@chakra-ui/avatar";
-import { Button, IconButton } from "@chakra-ui/button";
-import { Box, Container, Flex, Heading, Text, Spacer } from "@chakra-ui/layout";
-import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/menu";
-import { IoIosArrowDown } from "react-icons/io";
-import { IoMdMail } from "react-icons/io";
-import { AiOutlineMenu } from "react-icons/ai";
-import { Select } from "@chakra-ui/react";
+import React from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { Avatar } from '@chakra-ui/avatar';
+import { Button, IconButton } from '@chakra-ui/button';
+import { Box, Container, Flex, Heading, Text, Spacer } from '@chakra-ui/layout';
+import { Select } from '@chakra-ui/react';
 
-import paths from "utils/paths";
-import { useAppDispatch, useAppSelector } from "store/hook";
-import { logout } from "features/auth/AuthSlice";
-import { setLang } from "features/i18n/i18nSlice";
+import { Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/menu';
 
-import EnglishIcon from "../public/english.svg";
-import NepaliIcon from "../public/nepali.svg";
-import Image from "next/image";
+import { AiOutlineMenu } from 'react-icons/ai';
+import { IoIosArrowDown, IoMdMail } from 'react-icons/io';
+
+import paths from 'utils/paths';
+import { useAppDispatch, useAppSelector } from 'store/hook';
+import { logout } from 'features/auth/AuthSlice';
+import { setLang } from 'features/i18n/i18nSlice';
+
+import NepaliIcon from '../public/nepali.svg';
+import EnglishIcon from '../public/english.svg';
 
 interface NavbarProps {
   admin?: boolean;
@@ -25,7 +26,7 @@ interface NavbarProps {
 }
 
 function Navbar({ admin, onOpen }: NavbarProps) {
-  let dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
 
   const { lang, supportedLangs } = useAppSelector((state) => state.i18n);
@@ -51,7 +52,7 @@ function Navbar({ admin, onOpen }: NavbarProps) {
             </Button> */}
           </Flex>
           <Flex align="center" flexGrow="0">
-            <Flex display={["none", "none", "flex"]}>
+            <Flex display={['none', 'none', 'flex']}>
               <Box mr={2}>
                 <Link href={paths.category}>Categories</Link>
               </Box>
@@ -63,20 +64,20 @@ function Navbar({ admin, onOpen }: NavbarProps) {
             <Select
               placeholder="Select languages"
               size="lg"
-              width={"100%"}
+              width="100%"
               value={lang}
               onChange={(e) => {
                 e.preventDefault();
-                console.log(e.target.value, "value");
+                console.log(e.target.value, 'value');
                 dispatch(setLang(e.target.value));
               }}
             >
               {[
-                { lang: "en", label: "English", icon: EnglishIcon },
-                { lang: "np", label: "Nepal", icon: NepaliIcon },
+                { lang: 'en', label: 'English', icon: EnglishIcon },
+                { lang: 'np', label: 'Nepal', icon: NepaliIcon },
               ].map((data) => {
                 return (
-                  <option value={data.lang}>
+                  <option key={data.lang} value={data.lang}>
                     <Image
                       height={data.icon.height}
                       width={data.icon.width}
@@ -89,18 +90,18 @@ function Navbar({ admin, onOpen }: NavbarProps) {
               })}
             </Select>
 
-            <Flex align="center" mr={2} display={["none", "none", "flex"]}>
+            <Flex align="center" mr={2} display={['none', 'none', 'flex']}>
               {user ? (
                 <ProfileMenu imageLink={imageLink} />
               ) : (
                 <Flex>
                   <Link href={paths.signin}>
-                    <Button variant="ghost" colorScheme={"green"} mr={"2"}>
+                    <Button variant="ghost" colorScheme="green" mr="2">
                       Signin
                     </Button>
                   </Link>
                   <Link href={paths.signup}>
-                    <Button variant="solid" colorScheme={"green"}>
+                    <Button variant="solid" colorScheme="green">
                       Register
                     </Button>
                   </Link>
@@ -111,9 +112,9 @@ function Navbar({ admin, onOpen }: NavbarProps) {
             <IconButton
               aria-label="Main Drawer"
               onClick={onOpen}
-              colorScheme={"green"}
+              colorScheme="green"
               icon={<AiOutlineMenu />}
-              display={["inherit", "inherit", "none", "none"]}
+              display={['inherit', 'inherit', 'none', 'none']}
             />
           </Flex>
         </Flex>
@@ -126,7 +127,7 @@ function ProfileMenu({ imageLink }: { imageLink: string | undefined }) {
   const dispatch = useAppDispatch();
   const router = useRouter();
   let src =
-    "https://lh3.googleusercontent.com/a-/AOh14Gh3sw6_MgWpekvdavKnuW95E8FPfS-_y07WzkjM=s100";
+    'https://lh3.googleusercontent.com/a-/AOh14Gh3sw6_MgWpekvdavKnuW95E8FPfS-_y07WzkjM=s100';
   imageLink && (src = imageLink);
 
   return (
@@ -138,13 +139,13 @@ function ProfileMenu({ imageLink }: { imageLink: string | undefined }) {
             as={Button}
             _active={{}}
             _hover={{}}
-            colorScheme={"green"}
+            colorScheme="green"
             px={[0, 2]}
             outline="none"
             rightIcon={<IoIosArrowDown />}
             leftIcon={<Avatar size="sm" src={src} />}
           >
-            <Text display={["none", "none", "block"]}>Hello Bibek</Text>
+            <Text display={['none', 'none', 'block']}>Hello Bibek</Text>
           </MenuButton>
           <MenuList boxShadow="lg" border="none" color="green.700">
             <MenuItem>

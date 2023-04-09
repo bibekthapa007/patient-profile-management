@@ -1,6 +1,6 @@
-import React, { useState, useEffect, ReactNode } from "react";
-import SlickSlider, { Settings } from "react-slick";
-import ErrorBoundary from "./ErrorBoundary";
+import React, { useState, useEffect, ReactNode } from 'react';
+import SlickSlider, { Settings } from 'react-slick';
+import ErrorBoundary from './ErrorBoundary';
 
 interface SliderProps {
   children: ReactNode;
@@ -20,7 +20,7 @@ const Slider = React.forwardRef<SlickSlider, Settings>(
       <ErrorBoundary>
         <SlickSlider
           ref={ref}
-          key={isClient ? "client" : "server"}
+          key={isClient ? 'client' : 'server'}
           responsive={isClient ? responsive : undefined}
           {...rest}
         >
@@ -28,9 +28,9 @@ const Slider = React.forwardRef<SlickSlider, Settings>(
         </SlickSlider>
       </ErrorBoundary>
     );
-  }
+  },
 );
 
-Slider.displayName = "Slider";
+Slider.displayName = 'Slider';
 
 export default Slider;

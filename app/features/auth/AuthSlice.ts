@@ -1,11 +1,11 @@
-import axios from "axios";
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import axios from 'axios';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
-import { IAuthState, SigninResponse } from "types/auth";
-import { createBrearerAccessToken } from "utils/token";
+import { IAuthState, SigninResponse } from 'types/auth';
+import { createBrearerAccessToken } from 'utils/token';
 
 export const signin = createAsyncThunk(
-  "auth/signin",
+  'auth/signin',
   async (data: { email: string; password: string }, thunkApi) => {
     try {
       const response = await axios.post<SigninResponse>(
@@ -13,24 +13,24 @@ export const signin = createAsyncThunk(
         data,
         {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           withCredentials: true,
-        }
+        },
       );
       const { accessToken, refreshToken } = response.data;
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
 
       return response.data;
     } catch (error: any) {
       return thunkApi.rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 export const googleLogin = createAsyncThunk(
-  "auth/google",
+  'auth/google',
   async (data: { token: string }, thunkApi) => {
     try {
       const response = await axios.post<SigninResponse>(
@@ -38,23 +38,23 @@ export const googleLogin = createAsyncThunk(
         data,
         {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
-        }
+        },
       );
       const { accessToken, refreshToken } = response.data;
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
 
       return response.data;
     } catch (error: any) {
       return thunkApi.rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 export const signup = createAsyncThunk(
-  "auth/signup",
+  'auth/signup',
   async (data: { email: string; password: string }, thunkApi) => {
     try {
       const response = await axios.post<SigninResponse>(
@@ -62,39 +62,39 @@ export const signup = createAsyncThunk(
         data,
         {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
-        }
+        },
       );
       return response.data;
     } catch (error: any) {
       return thunkApi.rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 export const fetchUserData = createAsyncThunk(
-  "auth/check",
+  'auth/check',
   async (data, thunkApi) => {
     try {
       const response = await axios.get<SigninResponse>(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/auth/check`,
         {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: createBrearerAccessToken(),
           },
-        }
+        },
       );
       return response.data;
     } catch (error: any) {
       return thunkApi.rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 export const updateUser = createAsyncThunk(
-  "user/update",
+  'user/update',
   async (data: any, thunkApi) => {
     try {
       const response = await axios.put<SigninResponse>(
@@ -102,60 +102,60 @@ export const updateUser = createAsyncThunk(
         data,
         {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: createBrearerAccessToken(),
           },
-        }
+        },
       );
       return response.data;
     } catch (error: any) {
       return thunkApi.rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 export const logout = createAsyncThunk(
-  "auth/logout",
+  'auth/logout',
   async (data, thunkApi) => {
     try {
       const response = await axios.get<SigninResponse>(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/auth/logout`,
         {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: createBrearerAccessToken(),
           },
-        }
+        },
       );
       return response.data;
     } catch (error: any) {
       return thunkApi.rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 const initialState: IAuthState = {
   user: null,
   initialLoading: true,
   isSigningIn: false,
-  signinError: "",
+  signinError: '',
   isSigningUp: false,
-  signupError: "",
+  signupError: '',
   loggingout: false,
-  logoutError: "",
+  logoutError: '',
   updating: false,
-  updateError: "",
+  updateError: '',
   loading: false,
-  error: "",
+  error: '',
 };
 
 export const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState,
   reducers: {},
   extraReducers(builder) {
     builder
-      .addCase("HYDRATE", (state, action) => {
+      .addCase('HYDRATE', (state, action) => {
         state = { ...state, ...action };
       })
       .addCase(fetchUserData.pending, (state, action) => {
@@ -166,7 +166,7 @@ export const userSlice = createSlice({
         (state, action: PayloadAction<SigninResponse>) => {
           state.initialLoading = false;
           state.user = action.payload.user;
-        }
+        },
       )
       .addCase(fetchUserData.rejected, (state, action: PayloadAction<any>) => {
         state.initialLoading = false;
@@ -180,7 +180,7 @@ export const userSlice = createSlice({
         (state, action: PayloadAction<SigninResponse>) => {
           state.isSigningIn = false;
           state.user = action.payload.user;
-        }
+        },
       )
       .addCase(signin.rejected, (state, action: PayloadAction<any>) => {
         state.isSigningIn = false;
@@ -194,7 +194,7 @@ export const userSlice = createSlice({
         (state, action: PayloadAction<SigninResponse>) => {
           state.isSigningUp = false;
           state.user = action.payload.user;
-        }
+        },
       )
       .addCase(signup.rejected, (state, action: PayloadAction<any>) => {
         state.isSigningUp = false;
@@ -207,9 +207,9 @@ export const userSlice = createSlice({
         googleLogin.fulfilled,
         (state, action: PayloadAction<SigninResponse>) => {
           state.loading = false;
-          state.error = "";
+          state.error = '';
           state.user = action.payload.user;
-        }
+        },
       )
       .addCase(googleLogin.rejected, (state, action: PayloadAction<any>) => {
         state.loading = false;
@@ -222,9 +222,9 @@ export const userSlice = createSlice({
         logout.fulfilled,
         (state, action: PayloadAction<SigninResponse>) => {
           state.loggingout = false;
-          state.logoutError = "";
+          state.logoutError = '';
           state.user = null;
-        }
+        },
       )
       .addCase(logout.rejected, (state, action: PayloadAction<any>) => {
         state.loggingout = false;
@@ -237,7 +237,7 @@ export const userSlice = createSlice({
         updateUser.fulfilled,
         (state, action: PayloadAction<SigninResponse>) => {
           state.user = action.payload.user;
-        }
+        },
       )
       .addCase(updateUser.rejected, (state, action: PayloadAction<any>) => {
         state.loggingout = false;

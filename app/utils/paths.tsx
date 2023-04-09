@@ -6,25 +6,29 @@
 //  <Link  href = {paths.category('id-999')} />
 
 const paths = {
-  login: "/login",
-  signin: "/signin",
-  signup: "/signup",
-  register: "/register",
-  home: "/",
-  category: "/category",
-  post: "/post",
-  patient: "/patient",
-  createPatient: "/patient/create",
-  setting: "/setting",
-  userInfo: "/user-info",
-  changePassword: "/changePassword",
-  verifyMobile: "/verifyMobile",
+  login: '/login',
+  signin: '/signin',
+  signup: '/signup',
+  register: '/register',
+  home: '/',
+  category: '/category',
+  post: '/post',
+  patient: '/patient',
+  createPatient: '/patient/create',
+  setting: '/setting',
+  userInfo: '/user-info',
+  changePassword: '/changePassword',
+  verifyMobile: '/verifyMobile',
 
-  adminHome: "/admin",
-  adminPost: "/admin/post",
-  adminCreatePost: "/admin/post/create",
-  adminCategory: "/admin/category",
-  adminCreateCategory: "/admin/category/create",
+  appointment: '/appointment',
+  drug: '/drug',
+  prescription: '/prescription',
+
+  adminHome: '/admin',
+  adminPost: '/admin/post',
+  adminCreatePost: '/admin/post/create',
+  adminCategory: '/admin/category',
+  adminCreateCategory: '/admin/category/create',
 
   editPatient(patientId: number) {
     return `/patient/${patientId}/edit`;
@@ -33,27 +37,26 @@ const paths = {
     if (slug) {
       return `/post/${slug}`;
     }
-    return "/post";
+    return '/post';
   },
   singlePatient(patientId: number) {
     if (patientId) {
       return `/patient/${patientId}`;
-    } else {
-      return "/patient";
     }
+    return '/patient';
   },
   singleCategory(categoryId: string | null) {
     if (categoryId) {
       return `/category/${categoryId}`;
     }
-    return "/category";
+    return '/category';
   },
 
   adminSinglePost(slug: string | null) {
     if (slug) {
       return `/admin/post/${slug}`;
     }
-    return "/admin/post";
+    return '/admin/post';
   },
 
   categoryPosts(categoryId: string) {

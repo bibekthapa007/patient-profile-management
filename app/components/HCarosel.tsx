@@ -1,9 +1,10 @@
-import React from "react";
-import { SliderProps } from "@chakra-ui/react";
-import Slider from "./Slider";
-import { PrevArrow, NextArrow } from "./SliderArrow";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import React from 'react';
+
+import Slider from './Slider';
+import { PrevArrow, NextArrow } from './SliderArrow';
+
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 interface HCarouselProps {
   children: React.ReactNode[];
@@ -12,10 +13,10 @@ interface HCarouselProps {
 
 class HCarousel extends React.Component<HCarouselProps> {
   render() {
-    let { children, settings } = this.props;
-    let breakpoints = [480, 767, 1200, 1400];
+    const { children, settings } = this.props;
+    const breakpoints = [480, 767, 1200, 1400];
 
-    var finalSettings = {
+    const finalSettings = {
       dots: false,
       infinite: false,
       speed: 500,

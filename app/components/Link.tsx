@@ -1,8 +1,8 @@
-import React from "react";
-import NextLink from "next/link";
-import { Link as ChackraLink } from "@chakra-ui/react";
+import React from 'react';
+import NextLink from 'next/link';
+import { Link as ChackraLink } from '@chakra-ui/react';
 
-const Link = ({
+function Link({
   children,
   href,
   as,
@@ -14,10 +14,10 @@ const Link = ({
   nextLink,
   decoration,
   ...chackraProps
-}: any) => {
+}: any) {
   chackraProps._hover = {
     ...chackraProps._hover,
-    textDecoration: decoration || "none",
+    textDecoration: decoration || 'none',
   };
   return (
     <NextLink
@@ -33,6 +33,6 @@ const Link = ({
       <ChackraLink {...chackraProps}>{children}</ChackraLink>
     </NextLink>
   );
-};
+}
 
 export default Link;

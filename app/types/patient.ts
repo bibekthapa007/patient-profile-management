@@ -53,13 +53,13 @@ export interface IPatientState {
   patientError: string;
 
   creating: boolean;
-  createError: "";
+  createError: '';
 
   deleting: boolean;
-  deleteError: "";
+  deleteError: '';
 
   updating: boolean;
-  updateError: "";
+  updateError: '';
 }
 
 export interface IPatientAction {

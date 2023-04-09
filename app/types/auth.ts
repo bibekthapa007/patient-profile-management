@@ -59,7 +59,7 @@ export interface IAuthState {
   logoutError: string;
   loading: boolean;
   updating: false;
-  updateError: "";
+  updateError: '';
   error: string;
 }
 

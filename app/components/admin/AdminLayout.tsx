@@ -1,4 +1,4 @@
-import { Divider, Stack, Box, Grid } from "@chakra-ui/layout";
+import { Divider, Stack, Box, Grid } from '@chakra-ui/layout';
 import {
   Drawer,
   DrawerCloseButton,
@@ -6,29 +6,28 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
-} from "@chakra-ui/modal";
-import { useDisclosure } from "@chakra-ui/hooks";
-import { CgMenuGridO } from "react-icons/cg";
-import { AiOutlineHome } from "react-icons/ai";
-import { BsPerson } from "react-icons/bs";
-import { BiStore, BiLogOut } from "react-icons/bi";
-import { CgOptions } from "react-icons/cg";
+} from '@chakra-ui/modal';
+import { useDisclosure } from '@chakra-ui/hooks';
+import { CgMenuGridO, CgOptions } from 'react-icons/cg';
+import { AiOutlineHome } from 'react-icons/ai';
+import { BsPerson } from 'react-icons/bs';
+import { BiStore, BiLogOut } from 'react-icons/bi';
 
-import Navbar from "../Navbar";
-import NavItem from "../NavItem";
-import paths from "utils/paths";
-import { useAppDispatch, useAppSelector } from "store/hook";
-import Router, { useRouter } from "next/router";
-import { logout } from "features/auth/AuthSlice";
-import { Spinner } from "@chakra-ui/react";
-import { useEffect } from "react";
+import paths from 'utils/paths';
+import { useAppDispatch, useAppSelector } from 'store/hook';
+import Router, { useRouter } from 'next/router';
+import { logout } from 'features/auth/AuthSlice';
+import { Spinner } from '@chakra-ui/react';
+import { useEffect } from 'react';
+import NavItem from '../NavItem';
+import Navbar from '../Navbar';
 
 interface AdminLayoutProps {
   children: React.ReactNode | React.ReactNode[];
   bgColor?: string;
 }
 
-const AdminDrawerItems = () => {
+function AdminDrawerItems() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   return (
@@ -47,7 +46,7 @@ const AdminDrawerItems = () => {
         icon={<BiLogOut />}
         onClick={(e) => {
           e.preventDefault();
-          dispatch(logout()).then((data) => router.push("/login"));
+          dispatch(logout()).then((data) => router.push('/login'));
         }}
         label="Log Out"
         link="/#"
@@ -55,30 +54,30 @@ const AdminDrawerItems = () => {
       <Divider color="gray.300" />
     </Stack>
   );
-};
+}
 
 interface AdminRouteProps {
   children: React.ReactNode | React.ReactNode[];
 }
 
-const AdminRoute = ({ children }: AdminRouteProps) => {
+function AdminRoute({ children }: AdminRouteProps) {
   const { user, initialLoading } = useAppSelector((state) => state.auth);
   useEffect(() => {
-    if (!initialLoading && !(user?.role === "admin")) {
-      Router.replace("/");
+    if (!initialLoading && !(user?.role === 'admin')) {
+      Router.replace('/');
     }
   }, [user, initialLoading]);
 
   if (initialLoading) {
     return <Spinner />;
   }
-  if (!initialLoading && user?.role === "admin") {
+  if (!initialLoading && user?.role === 'admin') {
     return <>{children}</>;
   }
   return null;
-};
+}
 
-const AdminDrawerContent = () => {
+function AdminDrawerContent() {
   return (
     <DrawerContent>
       <DrawerCloseButton />
@@ -89,7 +88,7 @@ const AdminDrawerContent = () => {
       </DrawerFooter>
     </DrawerContent>
   );
-};
+}
 
 function AdminLayout({ children, bgColor }: AdminLayoutProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -98,15 +97,15 @@ function AdminLayout({ children, bgColor }: AdminLayoutProps) {
     <AdminRoute>
       <Box>
         <Navbar onOpen={onOpen} />
-        <Box bg={bgColor || "gray.50"} minHeight="calc(100vh - 64px)">
+        <Box bg={bgColor || 'gray.50'} minHeight="calc(100vh - 64px)">
           <Grid
-            templateColumns={["auto", "auto", "1fr 2fr", "1fr 3fr", "1fr 4fr"]}
+            templateColumns={['auto', 'auto', '1fr 2fr', '1fr 3fr', '1fr 4fr']}
             gap={[2, 2, 4]}
-            autoRows={`minmax(min-content, max-content)`}
+            autoRows="minmax(min-content, max-content)"
             position="relative"
           >
             <Box
-              display={["none", "none", "flex"]}
+              display={['none', 'none', 'flex']}
               bg="gray.50"
               minHeight="calc(100vh - 64px)"
               maxHeight="100vh"

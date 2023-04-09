@@ -1,23 +1,25 @@
-import { useEffect } from "react";
-import { useRouter } from "next/router";
+import { useEffect } from 'react';
+import { Box } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 
-import { useAppDispatch } from "store/hook";
-import { fetchPost } from "features/adminPost/AdminPostSlice";
-import DashboardLayout from "components/DashboardLayout";
-import CreatePatientForm from "components/CreatePatientForm";
+import { useAppDispatch } from 'store/hook';
+import DashboardLayout from 'components/DashboardLayout';
+import CreatePatientForm from 'components/CreatePatientForm';
 
 export default function CreatePatient() {
-  let dispatch = useAppDispatch();
-  let router = useRouter();
-  let slug = router.query.slug as string;
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const slug = router.query.slug as string;
 
   useEffect(() => {
-    dispatch(fetchPost(slug));
+    // dispatch(fetchPost(slug));
   }, [dispatch, slug]);
 
   return (
-    <DashboardLayout bgColor="white">
-      <CreatePatientForm />
+    <DashboardLayout bgColor="gray.50">
+      <Box m={4}>
+        <CreatePatientForm />
+      </Box>
     </DashboardLayout>
   );
 }

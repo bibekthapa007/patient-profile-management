@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Heading,
@@ -9,15 +9,16 @@ import {
   FormErrorMessage,
   Input,
   Flex,
-} from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useForm } from "react-hook-form";
-import Link from "next/link";
+} from '@chakra-ui/react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useForm } from 'react-hook-form';
 
-import { signin, signup } from "features/auth/AuthSlice";
-import { useAppDispatch, useAppSelector } from "store/hook";
-import { SigninFrom } from "types/auth";
-import paths from "utils/paths";
+import paths from 'utils/paths';
+import { signin, signup } from 'features/auth/AuthSlice';
+import { useAppDispatch, useAppSelector } from 'store/hook';
+
+import { SigninFrom } from 'types/auth';
 
 export default function SignInPage() {
   const router = useRouter();
@@ -40,23 +41,19 @@ export default function SignInPage() {
 
   const onSubmit = handleSubmit((data: any) => {
     dispatch(signin(data)).then(() => {
-      router.replace("/");
+      router.replace('/');
     });
   });
 
   return (
     <Box
-      w={{ base: "100%", md: "60%" }}
+      w={{ base: '100%', md: '60%' }}
       flex="flex"
       flexDir="column"
       justifyContent="center"
       alignItems="center"
     >
-      <Box
-        w={{ base: "full", md: "xl" }}
-        px={{ base: "8", md: "16" }}
-        mt={"20"}
-      >
+      <Box w={{ base: 'full', md: 'xl' }} px={{ base: '8', md: '16' }} mt="20">
         <Box mt="10" p="0">
           <Box>
             <Heading mb={6}>Sign In</Heading>
@@ -68,20 +65,17 @@ export default function SignInPage() {
                 <FormLabel>Email</FormLabel>
                 <Input
                   type="email"
-                  {...register("email", {
-                    required: "Please enter email.",
+                  {...register('email', {
+                    required: 'Please enter email.',
                     pattern: {
                       value:
                         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                      message: "Invalid email",
+                      message: 'Invalid email',
                     },
                   })}
                 />
-                {errors["email"] && (
-                  <FormErrorMessage>
-                    {" "}
-                    {errors["email"]["message"]}{" "}
-                  </FormErrorMessage>
+                {errors.email && (
+                  <FormErrorMessage> {errors.email.message} </FormErrorMessage>
                 )}
               </FormControl>
               <FormControl
@@ -92,19 +86,19 @@ export default function SignInPage() {
                 <FormLabel>Password</FormLabel>
                 <Input
                   type="password"
-                  {...register("password", {
-                    required: "Please enter password",
+                  {...register('password', {
+                    required: 'Please enter password',
                     maxLength: {
                       value: 20,
-                      message: "Max length 20 exceeded.",
+                      message: 'Max length 20 exceeded.',
                     },
-                    minLength: { value: 5, message: "Min length 5." },
+                    minLength: { value: 5, message: 'Min length 5.' },
                   })}
                 />
-                {errors["password"] && (
+                {errors.password && (
                   <FormErrorMessage>
-                    {" "}
-                    {errors["password"]["message"]}
+                    {' '}
+                    {errors.password.message}
                   </FormErrorMessage>
                 )}
               </FormControl>

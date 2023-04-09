@@ -1,9 +1,11 @@
-import React from "react";
-import { Box } from "@chakra-ui/layout";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import { IconButton } from "@chakra-ui/button";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import React from 'react';
+import { Box } from '@chakra-ui/layout';
+import { IconButton } from '@chakra-ui/button';
+
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 interface ArrowProps {
   className?: string;
@@ -12,14 +14,15 @@ interface ArrowProps {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-export const PrevArrow = ({
+export function PrevArrow({
   className,
   currentSlide,
   slideCount,
   onClick,
   ...props
-}: ArrowProps) => {
-  let noMore = className && className.includes("slick-disabled");
+}: ArrowProps) {
+  const noMore = className && className.includes('slick-disabled');
+
   return (
     <Box position="absolute" bottom="50%" zIndex={10}>
       <IconButton
@@ -34,10 +37,11 @@ export const PrevArrow = ({
       </IconButton>
     </Box>
   );
-};
+}
 
-export const NextArrow = ({ className, onClick }: ArrowProps) => {
-  let noMore = className && className.includes("slick-disabled");
+export function NextArrow({ className, onClick }: ArrowProps) {
+  const noMore = className && className.includes('slick-disabled');
+
   return (
     <Box position="absolute" bottom="50%" right={0} zIndex={10}>
       <IconButton
@@ -51,4 +55,4 @@ export const NextArrow = ({ className, onClick }: ArrowProps) => {
       </IconButton>
     </Box>
   );
-};
+}

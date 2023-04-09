@@ -1,83 +1,77 @@
-import axios from "axios";
-import { createStandaloneToast } from "@chakra-ui/toast";
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import axios from 'axios';
+import { createStandaloneToast } from '@chakra-ui/toast';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
 import {
   IPatientState,
   PatientForm,
   PatientResponse,
   PatientsResponse,
-} from "types/patient";
-import { createBrearerAccessToken } from "utils/token";
+} from 'types/patient';
+import patientService from 'services/patient';
+import { createBrearerAccessToken } from 'utils/token';
 
 const toast = createStandaloneToast();
 
 export const fetchPatients = createAsyncThunk(
-  "patient/list",
+  'patient/list',
   async (
-    data: { page: number; perPage: number; category?: string },
-    thunkApi
+    params: {
+      page: number;
+      perPage: number;
+      query?: string;
+      category?: string;
+    },
+    thunkApi,
   ) => {
     try {
-      const response = await axios.get<PatientsResponse>(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/patients`,
-        {
-          params: {
-            perPage: data.perPage,
-            page: data.page,
-            category: data.category,
-          },
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: createBrearerAccessToken(),
-          },
-        }
-      );
-      let nomore = response.data.patients.length < data.perPage;
+      const data: PatientsResponse = await patientService.fetchPatients(params);
 
-      return { page: data.page, nomore, ...response.data };
+      const nomore = data.patients.length < params.perPage;
+
+      return { page: params.page, nomore, ...data };
     } catch (error: any) {
       return thunkApi.rejectWithValue(
-        error.response.data.message || error.message
+        error.response.data.message || error.message,
       );
     }
-  }
+  },
 );
 
 export const fetchPatient = createAsyncThunk(
-  "patient/single",
+  'patient/single',
   async (patientId: string, thunkApi) => {
     try {
       const response = await axios.get<PatientResponse>(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/patients/${patientId}`,
         {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: createBrearerAccessToken(),
           },
-        }
+        },
       );
       return response.data;
     } catch (error: any) {
       return thunkApi.rejectWithValue(
-        error.response.data.message || error.message
+        error.response.data.message || error.message,
       );
     }
-  }
+  },
 );
 
 export const createPatient = createAsyncThunk(
-  "patient/create",
+  'patient/create',
   async (patient: PatientForm, thunkApi) => {
     try {
       const data = new FormData();
-      data.append("file", patient.userFiles[0]);
-      data.append("name", patient.name);
-      data.append("email", patient.email);
-      data.append("contact", patient.contact);
-      data.append("address", patient.address);
-      data.append("gender", patient.gender);
-      data.append("dob", patient.dob);
+      data.append('file', patient.userFiles[0]);
+      data.append('name', patient.name);
+      data.append('email', patient.email);
+      data.append('contact', patient.contact);
+      data.append('address', patient.address);
+      data.append('gender', patient.gender);
+      data.append('dob', patient.dob);
 
       const response = await axios.post<PatientResponse>(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/patients`,
@@ -86,31 +80,31 @@ export const createPatient = createAsyncThunk(
           headers: {
             Authorization: createBrearerAccessToken(),
           },
-        }
+        },
       );
       return response.data;
     } catch (error: any) {
       return thunkApi.rejectWithValue(
-        error.response.data.message || error.message
+        error.response.data.message || error.message,
       );
     }
-  }
+  },
 );
 
 export const updatePatient = createAsyncThunk(
-  "patient/update",
+  'patient/update',
   async (patient: PatientForm, thunkApi) => {
     try {
       if (patient.userFiles.length < 0) delete patient.userFiles;
       const data = new FormData();
-      data.append("file", patient.userFiles[0]);
-      data.append("name", patient.name);
-      data.append("email", patient.email);
-      data.append("contact", patient.contact);
-      data.append("address", patient.address);
-      data.append("gender", patient.gender);
-      data.append("dob", patient.dob);
-      data.append("notes", patient.notes);
+      data.append('file', patient.userFiles[0]);
+      data.append('name', patient.name);
+      data.append('email', patient.email);
+      data.append('contact', patient.contact);
+      data.append('address', patient.address);
+      data.append('gender', patient.gender);
+      data.append('dob', patient.dob);
+      data.append('notes', patient.notes);
 
       const response = await axios.put<PatientResponse>(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/patients/${patient.id}`,
@@ -119,38 +113,38 @@ export const updatePatient = createAsyncThunk(
           headers: {
             Authorization: createBrearerAccessToken(),
           },
-        }
+        },
       );
       return response.data;
     } catch (error: any) {
       return thunkApi.rejectWithValue(
-        error.response.data.message || error.message
+        error.response.data.message || error.message,
       );
     }
-  }
+  },
 );
 
 export const deletePatient = createAsyncThunk(
-  "patient/delete",
+  'patient/delete',
   async (patientId: number, thunkApi) => {
     try {
       const response = await axios.delete<PatientResponse>(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/patients/${patientId}`,
         {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           withCredentials: true,
-        }
+        },
       );
       response.data.patientId = patientId;
       return response.data;
     } catch (error: any) {
       return thunkApi.rejectWithValue(
-        error.response.data.message || error.message
+        error.response.data.message || error.message,
       );
     }
-  }
+  },
 );
 
 export const initfetchPatients = (params: any) => async (dispatch: any) => {
@@ -167,7 +161,7 @@ export const fetchMorePatients =
 const initialState: IPatientState = {
   patients: [],
   patientsLoading: false,
-  patientsError: "",
+  patientsError: '',
   page: 1,
   perPage: 10,
   total: 1000,
@@ -178,30 +172,30 @@ const initialState: IPatientState = {
 
   patient: null,
   patientLoading: false,
-  patientError: "",
+  patientError: '',
 
   creating: false,
-  createError: "",
+  createError: '',
 
   updating: false,
-  updateError: "",
+  updateError: '',
 
   deleting: false,
-  deleteError: "",
+  deleteError: '',
 };
 
 export const AdminPostSlice = createSlice({
-  name: "admin/post",
+  name: 'admin/post',
   initialState,
   reducers: {
     handlePageChange: (state, data) => {
-      console.log(data, "handlePageChange");
+      console.log(data, 'handlePageChange');
       state.page = data.payload.page;
       state.perPage = data.payload.perPage;
     },
 
     handlePerRowsChange: (state, data) => {
-      let { perPage, page } = data.payload;
+      const { perPage, page } = data.payload;
       state.page = page;
       state.perPage = perPage;
       // setPage(page);
@@ -243,7 +237,7 @@ export const AdminPostSlice = createSlice({
     builder
       .addCase(fetchPatients.pending, (state, action) => {
         state.patientsLoading = true;
-        state.patientsError = "";
+        state.patientsError = '';
       })
       .addCase(fetchPatients.fulfilled, (state, action) => {
         state.patientsLoading = false;
@@ -259,15 +253,15 @@ export const AdminPostSlice = createSlice({
       .addCase(fetchPatient.pending, (state, action) => {
         state.patientLoading = true;
         state.patient = null;
-        state.patientError = "";
-        state.updateError = "";
+        state.patientError = '';
+        state.updateError = '';
       })
       .addCase(
         fetchPatient.fulfilled,
         (state, action: PayloadAction<PatientResponse>) => {
           state.patientLoading = false;
           state.patient = action.payload.patient;
-        }
+        },
       )
       .addCase(fetchPatient.rejected, (state, action: PayloadAction<any>) => {
         state.patientsLoading = false;
@@ -276,7 +270,7 @@ export const AdminPostSlice = createSlice({
 
       .addCase(createPatient.pending, (state, action) => {
         state.creating = true;
-        state.createError = "";
+        state.createError = '';
       })
       .addCase(
         createPatient.fulfilled,
@@ -284,12 +278,12 @@ export const AdminPostSlice = createSlice({
           state.creating = false;
 
           toast.toast({
-            title: "Patient Created successfully",
-            status: "success",
+            title: 'Patient Created successfully',
+            status: 'success',
             duration: 5000,
             isClosable: true,
           });
-        }
+        },
       )
       .addCase(createPatient.rejected, (state, action: PayloadAction<any>) => {
         state.creating = false;
@@ -298,7 +292,7 @@ export const AdminPostSlice = createSlice({
 
       .addCase(updatePatient.pending, (state, action) => {
         state.updating = true;
-        state.updateError = "";
+        state.updateError = '';
       })
       .addCase(
         updatePatient.fulfilled,
@@ -306,12 +300,12 @@ export const AdminPostSlice = createSlice({
           state.updating = false;
 
           toast.toast({
-            title: "Patient edited successfully",
-            status: "success",
+            title: 'Patient edited successfully',
+            status: 'success',
             duration: 5000,
             isClosable: true,
           });
-        }
+        },
       )
       .addCase(updatePatient.rejected, (state, action: PayloadAction<any>) => {
         state.updating = false;
@@ -320,7 +314,7 @@ export const AdminPostSlice = createSlice({
 
       .addCase(deletePatient.pending, (state, action) => {
         state.deleting = true;
-        state.deleteError = "";
+        state.deleteError = '';
       })
       .addCase(
         deletePatient.fulfilled,
@@ -331,12 +325,12 @@ export const AdminPostSlice = createSlice({
           });
 
           toast.toast({
-            title: "Patient deleted successfully",
-            status: "error",
+            title: 'Patient deleted successfully',
+            status: 'error',
             duration: 5000,
             isClosable: true,
           });
-        }
+        },
       )
       .addCase(deletePatient.rejected, (state, action: PayloadAction<any>) => {
         state.deleting = false;
