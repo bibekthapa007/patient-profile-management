@@ -26,17 +26,16 @@ export class PatientsService {
       total: count,
     };
   }
+
   public async getPatients(query: GetPatientsDto) {
     this.logger.log(`Get all patients`);
 
     const { size, page, q } = query;
 
-    const data = await this.patients.getList();
+    const data = await this.patients.getList(query);
     const [{ total }] = await this.patients.getCount();
 
     const meta = this.getMeta({ size, page }, total);
-
-    console.log(meta, size, 'Meta');
 
     return { data, meta };
   }

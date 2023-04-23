@@ -12,8 +12,8 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiQuery, ApiOkResponse } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiQuery, ApiOkResponse, ApiBody } from '@nestjs/swagger';
 
 import { AccessTokenGuard } from '@/common/guards/AccessTokenGuard';
 
@@ -47,12 +47,15 @@ export class PatientsController {
 
   @UseInterceptors(FileInterceptor('file'))
   @Post()
+  @ApiBody({ type: CreatePatientDTO })
+  @ApiOkResponse({ type: GetPatientResponseDto })
   async createPatient(@UploadedFile() file, @Body() body: CreatePatientDTO) {
     return await this.patientsService.createPatient(body);
   }
 
   @UseInterceptors(FileInterceptor('file'))
   @Put('/:id')
+  @ApiBody({ type: CreatePatientDTO })
   @ApiOkResponse({ type: GetPatientResponseDto })
   async updatePatient(
     @Param('id', ParseIntPipe) id: number,

@@ -16,6 +16,7 @@ import { CreateUserDTO } from '@/modules/users/dto/create-user.dto';
 @Injectable()
 export class AuthService {
   private logger: Logger;
+
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
@@ -23,7 +24,7 @@ export class AuthService {
     this.logger = new Logger('AuthService');
   }
 
-  async getTokens(userId: number, email: string) {
+  private async getTokens(userId: number, email: string) {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         {
@@ -36,6 +37,7 @@ export class AuthService {
           expiresIn: '100m',
         },
       ),
+
       this.jwtService.signAsync(
         {
           sub: userId,
@@ -56,14 +58,17 @@ export class AuthService {
     return argon2.hash(data);
   }
 
-  async updateRefreshToken(userId: number, refreshToken: string) {
+  private async updateRefreshToken(userId: number, refreshToken: string) {
     const hashedRefreshToken = await this.hashData(refreshToken);
+
     await this.usersService.updateUser(userId, {
       refreshToken: hashedRefreshToken,
     });
   }
 
   async localSignUp(userBody: CreateUserDTO) {
+    this.logger.log(`User sign up with email: ${userBody.email}`);
+
     const [userExists] = await this.usersService.getByEmail(userBody.email);
 
     if (userExists) {
@@ -89,6 +94,8 @@ export class AuthService {
   }
 
   async localSignIn(userBody: UserLoginDTO) {
+    this.logger.log(`User sign up with email: ${userBody.email}`);
+
     const [user] = await this.usersService.getByEmail(userBody.email);
 
     if (!user) {
@@ -114,6 +121,8 @@ export class AuthService {
   }
 
   async refreshTokens(user: UserData) {
+    this.logger.log(`Update refresh token for user id: ${user.id}`);
+
     const tokens = await this.getTokens(user.id, user.email);
     await this.updateRefreshToken(user.id, tokens.refreshToken);
 
@@ -121,6 +130,8 @@ export class AuthService {
   }
 
   async logout(id: number) {
+    this.logger.log(`Logout user by id: ${id}`);
+
     await this.usersService.updateUser(id, { refreshToken: null });
 
     return { message: 'Logout Successfully.' };

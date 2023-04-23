@@ -1,16 +1,31 @@
-import { IsString, IsOptional } from 'class-validator';
+import { IsString, IsOptional, IsEnum } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 import { Pagination } from '@/common/classes/pagination';
+import { PATIENTS_SORT_BY_ORDER, SORTING_ORDER } from '@/common/enums/sort';
 
 export class GetPatientsDto extends Pagination {
   @ApiPropertyOptional({
     type: String,
-    description: 'Search query for patient name.',
+    description: 'Search query for patient name or email or contact.',
   })
   @IsString()
   @IsOptional()
   q: string;
+
+  @ApiPropertyOptional({
+    type: String,
+  })
+  @IsEnum(PATIENTS_SORT_BY_ORDER)
+  @IsOptional()
+  sortBy?: string;
+
+  @ApiPropertyOptional({
+    type: String,
+  })
+  @IsEnum(SORTING_ORDER)
+  @IsOptional()
+  order?: string;
 }
 
 export class GetPatientResponseDto {

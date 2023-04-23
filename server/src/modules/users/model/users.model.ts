@@ -1,9 +1,10 @@
 import BaseModel from '@/models/BaseModel';
 import { USERS } from '@/common/dbTables';
 
+import { UserData } from '@/common/interface/user';
+
 import { CreateUserDTO } from '../dto/create-user.dto';
 import { UpdateUserDTO } from '../dto/update-user.dto';
-import { UserData } from '@/common/interface/user';
 
 export class User extends BaseModel {
   private readonly TABLENAME = USERS;
@@ -12,8 +13,8 @@ export class User extends BaseModel {
     return this.query.table(this.TABLENAME);
   }
 
-  create(patientBody: CreateUserDTO) {
-    return this.table().insert(patientBody);
+  create(userBody: CreateUserDTO) {
+    return this.table().insert(userBody);
   }
 
   getList() {
@@ -32,8 +33,8 @@ export class User extends BaseModel {
     return this.table().where({ refreshToken });
   }
 
-  updateById(id: number, patientBody: UpdateUserDTO) {
-    return this.table().update(patientBody).where({ id });
+  updateById(id: number, userBody: UpdateUserDTO) {
+    return this.table().update(userBody).where({ id });
   }
 
   deleteById(id: number) {
