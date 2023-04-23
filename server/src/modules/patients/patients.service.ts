@@ -1,4 +1,5 @@
 import {
+  Logger,
   Injectable,
   NotFoundException,
   BadRequestException,
@@ -6,28 +7,51 @@ import {
 
 import { Patient } from './model/patients.model';
 
+import { GetPatientsDto } from './dto/get-patient.dto';
 import { CreatePatientDTO } from './dto/create-patient.dto';
 import { UpdatePatientDTO } from './dto/update-patient.dto';
 
 @Injectable()
 export class PatientsService {
-  constructor(private patients: Patient) {}
+  private logger: Logger;
 
-  public async getPatients() {
-    const patients = await this.patients.getList();
-    const [data] = await this.patients.getCount();
-    const { total } = data;
+  constructor(private patients: Patient) {
+    this.logger = new Logger('PatientsService');
+  }
 
-    return { patients, total };
+  private getMeta(pageParams: PageParams, count: number): Meta {
+    return {
+      page: pageParams.page,
+      pageSize: pageParams.size,
+      total: count,
+    };
+  }
+  public async getPatients(query: GetPatientsDto) {
+    this.logger.log(`Get all patients`);
+
+    const { size, page, q } = query;
+
+    const data = await this.patients.getList();
+    const [{ total }] = await this.patients.getCount();
+
+    const meta = this.getMeta({ size, page }, total);
+
+    console.log(meta, size, 'Meta');
+
+    return { data, meta };
   }
 
   public async getPatientById(id: number) {
+    this.logger.log(`Get patient by id: ${id}`);
+
     const [patient] = await this.patients.getById(id);
 
     return { patient };
   }
 
   public async createPatient(patientBody: CreatePatientDTO) {
+    this.logger.log(`Create Patient`);
+
     const [oldpatient] = await this.patients.getByEmail(patientBody.email);
 
     if (oldpatient) {
@@ -44,6 +68,8 @@ export class PatientsService {
   }
 
   public async updatePatient(patientId: number, patientBody: UpdatePatientDTO) {
+    this.logger.log(`Update patient by id: ${patientId}`);
+
     delete patientBody.file;
 
     const updatedPatientId = await this.patients.updateById(
@@ -57,6 +83,8 @@ export class PatientsService {
   }
 
   public async deletePatient(patientId: number) {
+    this.logger.log(`Delete patient by id: ${patientId}`);
+
     const [patient] = await this.patients.getById(patientId);
 
     if (!patient) {

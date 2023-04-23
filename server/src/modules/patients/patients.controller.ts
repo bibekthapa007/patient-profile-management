@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Query,
   ParseIntPipe,
   Post,
   Put,
@@ -11,12 +12,18 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { ApiQuery, ApiOkResponse } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 import { AccessTokenGuard } from '@/common/guards/AccessTokenGuard';
 
 import { PatientsService } from './patients.service';
 
+import {
+  GetPatientsDto,
+  GetPatientResponseDto,
+  GetPatientsResponseDto,
+} from './dto/get-patient.dto';
 import { CreatePatientDTO } from './dto/create-patient.dto';
 import { UpdatePatientDTO } from './dto/update-patient.dto';
 
@@ -26,11 +33,14 @@ export class PatientsController {
   constructor(private patientsService: PatientsService) {}
 
   @Get()
-  async getPatients() {
-    return await this.patientsService.getPatients();
+  @ApiQuery({ type: GetPatientsDto })
+  @ApiOkResponse({ type: GetPatientsResponseDto })
+  async getPatients(@Query() query: GetPatientsDto) {
+    return await this.patientsService.getPatients(query);
   }
 
   @Get('/:id')
+  @ApiOkResponse({ type: GetPatientResponseDto })
   async getPatientById(@Param('id', ParseIntPipe) id: number) {
     return await this.patientsService.getPatientById(id);
   }
@@ -43,6 +53,7 @@ export class PatientsController {
 
   @UseInterceptors(FileInterceptor('file'))
   @Put('/:id')
+  @ApiOkResponse({ type: GetPatientResponseDto })
   async updatePatient(
     @Param('id', ParseIntPipe) id: number,
     @Body() body: UpdatePatientDTO,
@@ -52,8 +63,6 @@ export class PatientsController {
 
   @Delete('/:id')
   async deletePatient(@Param('id', ParseIntPipe) id: number) {
-    await this.patientsService.getPatientById(id);
-
     return this.patientsService.deletePatient(id);
   }
 }
